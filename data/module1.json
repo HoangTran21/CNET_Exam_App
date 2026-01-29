@@ -1,0 +1,118 @@
+{
+    "title": "Kiem_Tra_Module_1_Python",
+    "time_seconds": 1200,
+  "questions": [
+    {
+      "q": "Lệnh nào dùng để in ra màn hình?",
+      "opts": ["show()", "print()", "input()", "write()"],
+      "ans": 1
+    },
+    {
+      "q": "Lệnh nào dùng để nhập dữ liệu từ bàn phím?",
+      "opts": ["get()", "scan()", "input()", "read()"],
+      "ans": 2
+    },
+    {
+      "q": "Kết quả của: print(3 + 4)",
+      "opts": ["34", "7", "3+4", "Lỗi"],
+      "ans": 1
+    },
+    {
+      "q": "Biến nào sau đây là hợp lệ?",
+      "opts": ["1so", "so-1", "so_1", "so 1"],
+      "ans": 2
+    },
+    {
+      "q": "Kiểu dữ liệu nào là số nguyên?",
+      "opts": ["3.5", "\"3\"", "3", "'3.0'"],
+      "ans": 2
+    },
+    {
+      "q": "\"Em học Python\" là kiểu dữ liệu nào?",
+      "opts": ["float", "string", "int", "bool"],
+      "ans": 1
+    },
+    {
+      "q": "Toán tử nào dùng để so sánh bằng?",
+      "opts": ["=", "==", "!=", "<="],
+      "ans": 1
+    },
+    {
+      "q": "Kết quả của đoạn code if với x = 10?",
+      "opts": ["A", "B", "AB", "Không in"],
+      "ans": 0
+    },
+    {
+      "q": "Vòng lặp nào dùng khi chưa biết trước số lần lặp?",
+      "opts": ["for", "while", "if", "elif"],
+      "ans": 1
+    },
+    {
+      "q": "Kết quả của: for i in range(3): print(i)",
+      "opts": ["1 2 3", "0 1 2", "0 1 2 3", "3 2 1"],
+      "ans": 1
+    },
+    {
+      "q": "Lệnh nào thêm phần tử vào cuối danh sách?",
+      "opts": ["add()", "append()", "insert()", "push()"],
+      "ans": 1
+    },
+    {
+      "q": "Danh sách nào hợp lệ?",
+      "opts": ["(1,2,3)", "{1,2,3}", "[1,2,3]", "<1,2,3>"],
+      "ans": 2
+    },
+    {
+      "q": "Kết quả của đoạn code append?",
+      "opts": ["[1,2,3]", "[4,1,2,3]", "[1,2,3,4]", "Lỗi"],
+      "ans": 2
+    },
+    {
+      "q": "Hàm randint(1,5) trả về:",
+      "opts": ["Số thực", "Số nguyên từ 1 đến 4", "Số nguyên từ 1 đến 5", "Số > 5"],
+      "ans": 2
+    },
+    {
+      "q": "Kết quả của: print(7 % 2)",
+      "opts": ["0", "1", "2", "7"],
+      "ans": 1
+    },
+    {
+      "q": "Lệnh nào xoá phần tử cuối danh sách?",
+      "opts": ["remove()", "del", "pop()", "clear()"],
+      "ans": 2
+    },
+    {
+      "q": "Đoạn code randint(1,3) có thể in ra kết quả nào?",
+      "opts": ["0", "-1", "2", "4"],
+      "ans": 2
+    },
+    {
+      "q": "Sau lệnh lst.pop(), danh sách sẽ:",
+      "opts": ["Giữ nguyên", "Mất phần tử đầu", "Mất phần tử cuối", "Bị xoá hết"],
+      "ans": 2
+    },
+    {
+      "q": "Kết quả của: print(lst.pop(0)) với lst = [10,20,30]",
+      "opts": ["10", "20", "30", "Lỗi"],
+      "ans": 0
+    },
+    {
+      "q": "Cách kiểm tra số chẵn đúng là:",
+      "opts": ["n / 2 == 0", "n % 2 == 0", "n // 2 == 0", "n == 2"],
+      "ans": 1
+    }
+  ],
+  "coding_tasks": [
+    "In các số từ 1 đến 10 bằng while hoặc for.",
+    "Nhập một số n, in \"Chan\" nếu n là số chẵn, ngược lại in \"Le\".",
+    "In ra tổng các số từ 1 đến n.",
+    "Nhập 5 số, in danh sách vừa nhập.",
+    "In ra các số chia hết cho 3 từ 1 đến 30 (tính cả 30).",
+    "Cho ds=[2,1,3,8,6,4,9], tìm số lớn nhất bằng vòng for.",
+    "Cho ds=[2,9,19,45,30,4,75], tính tổng các phần tử.",
+    "Nhập danh sách 7 số, sắp xếp tăng dần rồi in ra.",
+    "Nhập 5 số vào danh sách, xoá các số chẵn.",
+    "Tạo danh sách 10 số ngẫu nhiên, đếm số > 10."
+  ]
+}

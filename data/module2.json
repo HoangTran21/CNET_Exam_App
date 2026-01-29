@@ -1,0 +1,17 @@
+{
+    "title": "Kiem_tra_module_2_Python",
+    "time_seconds": 600,
+    "questions": [
+        {
+            "q": "Hàm nào dùng để lấy độ dài một danh sách?",
+            "opts": ["len()", "count()", "size()"],
+            "ans": 0
+        },
+        {
+            "q": "Kiểu dữ liệu nào không thể thay đổi (immutable)?",
+            "opts": ["list", "dict", "tuple"],
+            "ans": 2
+        }
+    ],
+    "coding_task": "Viết chương trình Python tính tổng các số lẻ từ 1 đến n."
+}
