@@ -1,17 +1,174 @@
 {
     "title": "Kiem_tra_module_2_Python",
-    "time_seconds": 600,
+    "time_seconds": 3600,
     "questions": [
         {
-            "q": "Hàm nào dùng để lấy độ dài một danh sách?",
-            "opts": ["len()", "count()", "size()"],
+            "q": "Thuật toán (Algorithm) được định nghĩa là gì?",
+            "opts": ["Một ngôn ngữ lập trình cụ thể", "Dãy các bước hay lệnh để giải một bài toán", "Một phần mềm máy tính", "Một loại dữ liệu"],
+            "ans": 1
+        },
+        {
+            "q": "Đâu KHÔNG phải là đặc điểm của một thuật toán?",
+            "opts": ["Tính hữu hạn", "Tính chính xác", "Tính vô tận", "Tính khả thi"],
+            "ans": 2
+        },
+        {
+            "q": "Trong thuật toán, tính hiệu quả được đánh giá dựa trên yếu tố nào?",
+            "opts": [
+                    "Thời gian chạy ít nhất",
+                    "Sử dụng ít bộ nhớ nhất",
+                    "Độ phức tạp thuật toán",
+                    "Tất cả các phương án trên"
+                    ],
+            "ans": 3
+        },
+        {
+            "q": "Hàm gcd(a, b) thường được dùng để tính gì?",
+            "opts": ["Bội chung nhỏ nhất", "Ước chung lớn nhất", "Tổng hai số", "Hiệu hai số"],
+            "ans": 1
+        },
+        {
+            "q": "Để đếm số lượng số chẵn trong một danh sách A, ta sử dụng điều kiện nào?",
+            "opts": ["A[i] % 2 == 0", "A[i] % 2 != 0", "A[i] // 2 == 0", "A[i] / 2 == 1"],
             "ans": 0
         },
         {
-            "q": "Kiểu dữ liệu nào không thể thay đổi (immutable)?",
-            "opts": ["list", "dict", "tuple"],
+            "q": "Bài toán: 'Cha 35 tuổi, con 5 tuổi. Sau bao nhiêu năm nữa thì tuổi cha gấp 3 lần tuổi con?'. Nếu dùng vòng lặp để giải, điều kiện nào để vòng lặp DỪNG lại?",
+            "opts": [
+                "Khi tuổi cha bằng tuổi con cộng thêm 3", 
+                "Khi (35 + số năm) == 3 * (5 + số năm)", 
+                "Khi số năm đạt đến 100", 
+                "Khi tuổi cha chia hết cho tuổi con"
+            ],
+            "ans": 1
+        },
+        {
+            "q": "Một số tự nhiên n > 1 được gọi là số hoàn hảo khi nào?",
+            "opts": ["Nó là số nguyên tố", "Nó bằng tổng các ước số thực sự của nó", "Nó chia hết cho 2", "Nó là số lẻ"],
+            "ans": 1
+        },
+        {
+            "q": "Dãy Fibonacci bắt đầu bằng hai số nào?",
+            "opts": ["1, 1", "0, 1", "1, 2", "0, 0"],
+            "ans": 1
+        },
+        {
+            "q": "Trong thuật toán Bubble Sort, nếu phần tử trước lớn hơn phần tử sau, ta cần làm gì?",
+            "opts": ["Xóa phần tử đó", "Giữ nguyên vị trí", "Đổi chỗ chúng", "Nhân hai phần tử"],
             "ans": 2
+        },
+        {
+            "q": "Sau mỗi vòng lặp của Bubble Sort, phần tử nào sẽ 'nổi' lên cuối danh sách?",
+            "opts": ["Phần tử nhỏ nhất", "Phần tử lớn nhất", "Phần tử đầu tiên", "Phần tử ngẫu nhiên"],
+            "ans": 1
+        },
+        {
+            "q": "Để tính trung bình cộng của một danh sách, ta cần thực hiện các bước nào?",
+            "opts": ["Lấy tổng chia cho độ dài danh sách", "Lấy số lớn nhất cộng số nhỏ nhất", "Lấy tổng nhân độ dài", "Lấy phần tử giữa"],
+            "ans": 0
+        },
+        {
+            "q": "Trong bài tập tính tổng 1000 số tự nhiên, biến TONG ban đầu nên đặt là bao nhiêu?",
+            "opts": ["1", "1000", "0", "-1"],
+            "ans": 2
+        },
+        {
+            "q": "Để tìm số nguyên tố, ta kiểm tra xem N có chia hết cho bất kỳ i nào trong khoảng nào?",
+            "opts": ["Từ 1 đến N", "Từ 2 đến N-1", "Từ 0 đến N", "Từ 2 đến N"],
+            "ans": 1
+        },
+        {
+            "q": "Diện tích hình tam giác được tính theo công thức nào?",
+            "opts": ["Cạnh đáy * chiều cao", "(Cạnh đáy * chiều cao) / 2", "Cạnh đáy + chiều cao", "Cạnh đáy * 2"],
+            "ans": 1
+        },
+        {
+            "q": "Kiểu dữ liệu nào được dùng để lưu trữ các cặp key-value?",
+            "opts": ["List", "Tuple", "Set", "Dictionary"],
+            "ans": 3
+        },
+        {
+            "q": "Để loại bỏ các phần tử trùng lặp mà không quan tâm đến thứ tự, ta nên chuyển list sang kiểu gì?",
+            "opts": ["Set", "Tuple", "String", "Integer"],
+            "ans": 0
+        },
+        {
+            "q": "Hàm word_frequency('apple banana apple') sẽ trả về kết quả nào?",
+            "opts": ["{'apple': 1, 'banana': 1}", "{'apple': 2, 'banana': 1}", "['apple', 'banana']", "3"],
+            "ans": 1
+        },
+        {
+            "q": "Toán tử nào dùng để tìm giao của hai set trong Python?",
+            "opts": ["|", "&&", "-", "^"],
+            "ans": 1
+        },
+        {
+            "q": "Hàm merge_dicts({'a': 1}, {'a': 2}) theo yêu cầu đề bài sẽ trả về giá trị key 'a' là bao nhiêu?",
+            "opts": ["1", "2", "3", "0"],
+            "ans": 2
+        },
+        {
+            "q": "Biểu thức lambda x: x > 2 trong hàm filter_custom dùng để làm gì?",
+            "opts": ["Tính tổng", "Lọc các số lớn hơn 2", "Lọc các số nhỏ hơn 2", "Nhân x với 2"],
+            "ans": 1
+        },
+        {
+            "q": "Kiểu dữ liệu nào là Immutable (không thể thay đổi)?",
+            "opts": ["List", "Dictionary", "Tuple", "Set"],
+            "ans": 2
+        },
+        {
+            "q": "Lệnh split() thường được dùng để làm gì khi nhập dữ liệu từ bàn phím?",
+            "opts": ["Gộp chuỗi", "Cắt chuỗi thành danh sách", "Xóa khoảng trắng", "Đổi kiểu dữ liệu"],
+            "ans": 1
+        },
+        {
+            "q": "Để kiểm tra chuỗi Palindrome, ta so sánh chuỗi gốc với chuỗi nào?",
+            "opts": ["Chuỗi viết hoa", "Chuỗi đảo ngược", "Chuỗi không dấu", "Độ dài chuỗi"],
+            "ans": 1
+        },
+        {
+            "q": "Trong thuật toán đếm số (Dem_So), mục tiêu là đếm gì?",
+            "opts": ["Đếm số từ", "Đếm số chữ cái", "Đếm các chữ số trong văn bản", "Đếm số dòng"],
+            "ans": 2
+        },
+        {
+            "q": "Hàm Fibonacci(4) với dãy 0, 1, 1, 2, 3... sẽ trả về giá trị nào? (Tính từ F0=0)",
+            "opts": ["1", "2", "3", "5"],
+            "ans": 2
+        },
+        {
+            "q": "Để tìm số lớn thứ hai trong danh sách, cách làm nào hợp lý nếu không dùng hàm sorted?",
+            "opts": ["Tìm Max, xóa Max, rồi tìm Max lại", "Lấy phần tử đầu tiên", "Lấy phần tử cuối cùng", "Tính trung bình"],
+            "ans": 0
+        },
+        {
+            "q": "Bài toán 'Two Sum' yêu cầu tìm gì?",
+            "opts": ["Tổng của cả mảng", "Hai chỉ số i, j sao cho tổng bằng target", "Số lớn nhất và nhỏ nhất", "Các số chia hết cho 2"],
+            "ans": 1
+        },
+        {
+            "q": "Trong thuật toán tính giai thừa n!, ta thực hiện phép toán gì?",
+            "opts": ["Cộng dồn", "Chia dồn", "Nhân dồn từ 1 đến n", "Lũy thừa"],
+            "ans": 2
+        },
+        {
+            "q": "Hàm range(1, 1001) trong Python sẽ chạy từ 1 đến bao nhiêu?",
+            "opts": ["1001", "1000", "999", "1"],
+            "ans": 1
+        },
+        {
+            "q": "Khi viết hàm trả về nhiều giá trị như (sum, average), kết quả thực tế là kiểu dữ liệu gì?",
+            "opts": ["List", "Tuple", "Dict", "Set"],
+            "ans": 1
         }
     ],
-    "coding_task": "Viết chương trình Python tính tổng các số lẻ từ 1 đến n."
+    "coding_tasks": [
+        "1. Viết hàm So_Hoan_Hao(n) để kiểm tra một số n có phải số hoàn hảo hay không. Liệt kê các số hoàn hảo từ 1 đến 1000.",
+        "2. Viết chương trình nhập vào một danh sách số nguyên từ bàn phím (trên cùng một dòng, cách nhau bởi dấu cách), sau đó sử dụng Bubble Sort để sắp xếp giảm dần.",
+        "3. Viết hàm count_elements(lst) trả về một dictionary chứa tần suất xuất hiện của mỗi phần tử trong danh sách.",
+        "4. Viết hàm Fibonacci_List(n) trả về một danh sách chứa n số đầu tiên của dãy Fibonacci.",
+        "5. Viết chương trình giải bài toán 'Mẹ sinh con năm 26 tuổi, 15 năm nữa tuổi mẹ gấp đôi tuổi con'. Sử dụng vòng lặp để tìm tuổi hiện tại của cả hai.",
+        "6. Viết hàm merge_and_sum(d1, d2) nhận vào 2 dictionary có các giá trị là số, thực hiện gộp chúng lại, nếu trùng key thì cộng dồn giá trị."
+    ]
 }
