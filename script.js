@@ -25,7 +25,7 @@ const resultTime = document.getElementById("result-time");
 const resultAnswers = document.getElementById("result-answers");
 
 // Set this after deploying your Google Apps Script Web App
-const DRIVE_UPLOAD_URL = "https://script.google.com/macros/s/AKfycby5wnble5UEdizrmn8YAbn9aqioc0iPB_au9UveuSGtKvuFKaQleGsd7smuq3EV48fg/exec";
+const DRIVE_UPLOAD_URL = "https://script.google.com/macros/s/AKfycbxMryw41yc86Y1ySkYEb8W7P3nyEEqmE7JveepltgbJp6CH-AjxgGsWjM0tQwozhtmQ/exec";
 
 let currentQuiz = null;
 let countdownId = null;
@@ -258,9 +258,10 @@ async function handleSubmit() {
   resultBox.style.display = "block";
 
   renderResult(payload, currentQuiz);
-  const fileName = `${sanitizeFileName(currentQuiz.title)}_${sanitizeFileName(name)}.doc`;
+  const fileName = `${sanitizeFileName(currentQuiz.title)}_${sanitizeFileName(name)}_${new Date().toISOString().slice(0,16).replace(/:/g,'-')}.doc`;
   const wordHtml = buildWordHtml(payload, currentQuiz);
-  downloadWordFile(fileName, wordHtml);
+  // Don't download to student's machine - only upload to teacher's Drive
+  // downloadWordFile(fileName, wordHtml);
   await uploadToDrive(fileName, wordHtml, payload);
   resultCard.style.display = "block";
   resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
