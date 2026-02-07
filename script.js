@@ -213,6 +213,13 @@ async function handleStart() {
   }
 }
 
+function onSubmitBtnClick() {
+  const confirmation = confirm("Em chắc chắn muốn nộp bài không? Không thể sửa lại sau đó!");
+  if (confirmation) {
+    handleSubmit();
+  }
+}
+
 async function handleSubmit() {
   if (!currentQuiz) return;
   const name = getStudentName();
@@ -260,12 +267,18 @@ async function handleSubmit() {
   renderResult(payload, currentQuiz);
   const fileName = `${sanitizeFileName(currentQuiz.title)}_${sanitizeFileName(name)}_${new Date().toISOString().slice(0,16).replace(/:/g,'-')}.doc`;
   const wordHtml = buildWordHtml(payload, currentQuiz);
-  // Don't download to student's machine - only upload to teacher's Drive
-  // downloadWordFile(fileName, wordHtml);
-  await uploadToDrive(fileName, wordHtml, payload);
+  downloadWordFile(fileName, wordHtml);
+  resultBox.innerHTML += "<br><span style='color: green;'>✓ File da tai ve. Gui file cho giao vien qua Zalo."};
   resultCard.style.display = "block";
   resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
   if (countdownId) clearInterval(countdownId);
+}
+
+function onResetBtnClick() {
+  const confirmation = confirm("Em co chac chan muon lam lai? Du lieu hien tai se mat!");
+  if (confirmation) {
+    handleReset();
+  }
 }
 
 function handleReset() {
@@ -376,30 +389,45 @@ function buildAnswerSummary(quizData, selectedAnswers) {
     const item = document.createElement("div");
     item.className = "answer-item";
 
-    const head = document.createElement("div");
-    head.className = "answer-head";
-
-    const tag = document.createElement("span");
     const picked = selectedAnswers?.[idx] ?? -1;
     const isCorrect = picked === q.ans;
-    tag.className = `answer-tag${isCorrect ? "" : " wrong"}`;
-    tag.textContent = isCorrect ? "Dung" : "Sai";
+    
+    const headerRow = document.createElement("div");
+    headerRow.style.cssText = "display: grid; grid-template-columns: 40px 1fr 150px; gap: 12px; align-items: start; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;";
+    
+    const numTag = document.createElement("span");
+    numTag.textContent = `${idx + 1}`;
+    numTag.style.cssText = "font-weight: bold; color: #3498db;";
+    
+    const questionText = document.createElement("div");
+    questionText.textContent = q.q;
+    questionText.style.cssText = "font-weight: 500;";
+    
+    const statusTag = document.createElement("span");
+    statusTag.className = `answer-tag${isCorrect ? "" : " wrong"}`;
+    statusTag.textContent = isCorrect ? "✓ Đúng" : "✗ Sai";
+    statusTag.style.cssText = `text-align: center; padding: 4px 8px; border-radius: 4px; font-weight: bold; ${isCorrect ? "background: #d4edda; color: #155724;" : "background: #f8d7da; color: #721c24;"}`;
+    
+    headerRow.appendChild(numTag);
+    headerRow.appendChild(questionText);
+    headerRow.appendChild(statusTag);
+    item.appendChild(headerRow);
 
-    const title = document.createElement("div");
-    title.textContent = `${idx + 1}. ${q.q}`;
-
-    head.appendChild(tag);
-    head.appendChild(title);
-    item.appendChild(head);
-
-    const student = document.createElement("div");
-    const studentText = picked === -1 ? "(bo trong)" : q.opts[picked];
-    student.textContent = `Tra loi: ${studentText}`;
-    item.appendChild(student);
-
-    const correct = document.createElement("div");
-    correct.textContent = `Dap an dung: ${q.opts[q.ans]}`;
-    item.appendChild(correct);
+    const answerRow = document.createElement("div");
+    answerRow.style.cssText = "display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; padding-left: 40px;";
+    
+    const studentDiv = document.createElement("div");
+    const studentText = picked === -1 ? "(không chọn)" : q.opts[picked];
+    studentDiv.innerHTML = `<strong>Trả lời:</strong> ${studentText}`;
+    studentDiv.style.cssText = "color: #555;";
+    
+    const correctDiv = document.createElement("div");
+    correctDiv.innerHTML = `<strong>Đáp án:</strong> ${q.opts[q.ans]}`;
+    correctDiv.style.cssText = "color: #28a745; font-weight: 500;";
+    
+    answerRow.appendChild(studentDiv);
+    answerRow.appendChild(correctDiv);
+    item.appendChild(answerRow);
 
     resultAnswers.appendChild(item);
   });
@@ -427,8 +455,8 @@ async function hydrateFromStorage() {
 }
 
 startBtn.addEventListener("click", handleStart);
-submitBtn.addEventListener("click", handleSubmit);
-resetBtn.addEventListener("click", handleReset);
+submitBtn.addEventListener("click", onSubmitBtnClick);
+resetBtn.addEventListener("click", onResetBtnClick);
 nameInput.addEventListener("input", () => setNameError(""));
 
 questionsEl.addEventListener("change", (event) => {
