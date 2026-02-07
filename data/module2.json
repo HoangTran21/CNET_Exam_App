@@ -99,11 +99,11 @@
         },
         {
             "q": "Toán tử nào dùng để tìm giao của hai set trong Python?",
-            "opts": ["|", "&&", "-", "^"],
+            "opts": ["|", "&", "-", "^"],
             "ans": 1
         },
         {
-            "q": "Hàm merge_dicts({'a': 1}, {'a': 2}) theo yêu cầu đề bài sẽ trả về giá trị key 'a' là bao nhiêu?",
+            "q": "Hàm merge_dicts({'a': 1}, {'a': 2}) theo yêu cầu đề bài sẽ trả về giá trị key 'a' là bao nhiêu?. Gợi ý: merge_dicts là hàm gộp 2 dict, nếu trùng key thì cộng dồn giá trị",
             "opts": ["1", "2", "3", "0"],
             "ans": 2
         },
@@ -166,9 +166,9 @@
     "coding_tasks": [
         "1. Viết hàm So_Hoan_Hao(n) để kiểm tra một số n có phải số hoàn hảo hay không. Liệt kê các số hoàn hảo từ 1 đến 1000.",
         "2. Viết chương trình nhập vào một danh sách số nguyên từ bàn phím (trên cùng một dòng, cách nhau bởi dấu cách), sau đó sử dụng Bubble Sort để sắp xếp giảm dần.",
-        "3. Viết hàm count_elements(lst) trả về một dictionary chứa tần suất xuất hiện của mỗi phần tử trong danh sách.",
+        "3. Viết hàm unique_elements(lst) trả về một set chứa các phần tử không trùng lặp trong danh sách. Với lst = [1, 2, 2, 3, 4, 4, 5], hàm sẽ trả về {1, 2, 3, 4, 5}.",
         "4. Viết hàm Fibonacci_List(n) trả về một danh sách chứa n số đầu tiên của dãy Fibonacci.",
         "5. Viết chương trình giải bài toán 'Mẹ sinh con năm 26 tuổi, 15 năm nữa tuổi mẹ gấp đôi tuổi con'. Sử dụng vòng lặp để tìm tuổi hiện tại của cả hai.",
-        "6. Viết hàm merge_and_sum(d1, d2) nhận vào 2 dictionary có các giá trị là số, thực hiện gộp chúng lại, nếu trùng key thì cộng dồn giá trị."
+        "6. Viết hàm get_value(d, key) nhận vào một dictionary d và một key, trả về giá trị tương ứng với key đó. Nếu key không tồn tại trong dictionary thì trả về \"Không tồn tại\"."
     ]
 }

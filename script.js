@@ -70,7 +70,7 @@ function setNameError(message) {
 function getStudentName() {
   const name = nameInput.value.trim();
   if (!name) {
-    setNameError("Vui long nhap ho va ten.");
+    setNameError("Vui lòng nhập họ và tên.");
     nameInput.focus();
     return null;
   }
@@ -87,7 +87,7 @@ function buildQuestions(questions) {
 
     const title = document.createElement("div");
     title.className = "question-title";
-    title.textContent = `Cau ${idx + 1}: ${item.q}`;
+    title.textContent = `Câu ${idx + 1}: ${item.q}`;
     wrapper.appendChild(title);
 
     const options = document.createElement("div");
@@ -120,7 +120,7 @@ function buildQuestions(questions) {
 }
 
 function setQuizInfo(data) {
-  quizInfo.textContent = `${data.title} · ${data.questions.length} cau`;
+  quizInfo.textContent = `${data.title} · ${data.questions.length} câu`;
 }
 
 function normalizeCodingTasks(data) {
@@ -134,7 +134,7 @@ function renderCodingTasks(tasks) {
   if (!tasks.length) {
     const empty = document.createElement("div");
     empty.className = "coding-card";
-    empty.textContent = "Khong co bai tap code cho de nay.";
+    empty.textContent = "Không có bài tập code cho đề này.";
     codingList.appendChild(empty);
     return;
   }
@@ -144,7 +144,7 @@ function renderCodingTasks(tasks) {
     card.className = "coding-card";
 
     const title = document.createElement("h4");
-    title.textContent = `Bai ${idx + 1}`;
+    title.textContent = `Bài ${idx + 1}`;
     card.appendChild(title);
 
     const desc = document.createElement("div");
@@ -155,7 +155,7 @@ function renderCodingTasks(tasks) {
     const textarea = document.createElement("textarea");
     textarea.className = "coding";
     textarea.rows = 6;
-    textarea.placeholder = "Nhap code cua ban...";
+    textarea.placeholder = "Nhập code của bạn...";
     textarea.dataset.index = idx;
     
     // Add auto-indent handler for Python ':'
@@ -176,7 +176,7 @@ function renderCodingTasks(tasks) {
 
 async function loadQuiz(file) {
   const response = await fetch(file);
-  if (!response.ok) throw new Error("Khong the tai de thi");
+  if (!response.ok) throw new Error("Không thể tải đề thi");
   return response.json();
 }
 
@@ -209,7 +209,7 @@ async function handleStart() {
     quizCard.style.display = "block";
     resultCard.style.display = "none";
   } catch (err) {
-    alert(err.message || "Co loi xay ra");
+    alert(err.message || "Có lỗi xảy ra");
   }
 }
 
@@ -260,7 +260,7 @@ async function handleSubmit() {
 
   localStorage.setItem("cnet_exam_last_submit", JSON.stringify(payload));
 
-  const summaryHtml = `<strong>${name}</strong>, ban dung ${correct}/${total} cau.\nDe: ${currentQuiz.title}`;
+  const summaryHtml = `<strong>${name}</strong>, bạn đúng ${correct}/${total} câu.\nĐề: ${currentQuiz.title}`;
   resultBox.innerHTML = summaryHtml.replace(/\n/g, "<br>");
   resultBox.style.display = "block";
 
@@ -268,14 +268,14 @@ async function handleSubmit() {
   const fileName = `${sanitizeFileName(currentQuiz.title)}_${sanitizeFileName(name)}_${new Date().toISOString().slice(0,16).replace(/:/g,'-')}.doc`;
   const wordHtml = buildWordHtml(payload, currentQuiz);
   downloadWordFile(fileName, wordHtml);
-  resultBox.innerHTML += "<br><span style='color: green;'>✓ File da tai ve. Gui file cho giao vien qua Zalo."};
+  resultBox.innerHTML += "<br><span style='color: green;'>✓ File đã tải về. Gửi file cho giáo viên qua Zalo.</span>";
   resultCard.style.display = "block";
   resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
   if (countdownId) clearInterval(countdownId);
-
+}
 
 function onResetBtnClick() {
-  const confirmation = confirm("Em co chac chan muon lam lai? Du lieu hien tai se mat!");
+  const confirmation = confirm("Em có chắc chắn muốn làm lại? Dữ liệu hiện tại sẽ mất!");
   if (confirmation) {
     handleReset();
   }
@@ -307,31 +307,31 @@ function sanitizeFileName(value) {
 function buildWordHtml(payload, quizData) {
   const lines = [];
   lines.push(`<h1>${payload.quizTitle}</h1>`);
-  lines.push(`<p><strong>Hoc sinh:</strong> ${payload.name}</p>`);
-  lines.push(`<p><strong>Diem trac nghiem:</strong> ${payload.score}</p>`);
-  lines.push(`<p><strong>Thoi gian nop:</strong> ${formatDate(payload.submittedAt)}</p>`);
+  lines.push(`<p><strong>Học sinh:</strong> ${payload.name}</p>`);
+  lines.push(`<p><strong>Điểm trắc nghiệm:</strong> ${payload.score}</p>`);
+  lines.push(`<p><strong>Thời gian nộp:</strong> ${formatDate(payload.submittedAt)}</p>`);
 
-  lines.push("<h2>I. PHAN TRAC NGHIEM</h2>");
+  lines.push("<h2>I. PHẦN TRẮC NGHIỆM</h2>");
   if (quizData?.questions?.length) {
     quizData.questions.forEach((q, idx) => {
       const picked = payload.selectedAnswers?.[idx] ?? -1;
-      const pickedText = picked === -1 ? "(Bo trong)" : q.opts[picked];
-      lines.push(`<p><strong>Cau ${idx + 1}:</strong> ${q.q}</p>`);
-      lines.push(`<p>Tra loi: ${pickedText}</p>`);
-      lines.push(`<p>Dap an dung: ${q.opts[q.ans]}</p>`);
+      const pickedText = picked === -1 ? "(Bỏ trống)" : q.opts[picked];
+      lines.push(`<p><strong>Câu ${idx + 1}:</strong> ${q.q}</p>`);
+      lines.push(`<p>Trả lời: ${pickedText}</p>`);
+      lines.push(`<p>Đáp án đúng: ${q.opts[q.ans]}</p>`);
       lines.push("<br />");
     });
   }
 
-  lines.push("<h2>II. PHAN TU LUAN (CODE)</h2>");
+  lines.push("<h2>II. PHẦN TỰ LUẬN (CODE)</h2>");
   if (payload.codingAnswers?.length) {
     payload.codingAnswers.forEach((ans, idx) => {
-      const value = ans || "(Bo trong)";
-      lines.push(`<p><strong>Bai ${idx + 1}:</strong></p>`);
+      const value = ans || "(Bỏ trống)";
+      lines.push(`<p><strong>Bài ${idx + 1}:</strong></p>`);
       lines.push(`<pre style=\"background:#f5f5f5;padding:10px;border-radius:6px;\">${value}</pre>`);
     });
   } else {
-    lines.push("<p>(Khong co bai tap code)</p>");
+    lines.push("<p>(Không có bài tập code)</p>");
   }
 
   return `<!doctype html><html><head><meta charset=\"utf-8\"></head><body style=\"font-family:Times New Roman, serif;\">${lines.join("\n")}</body></html>`;
@@ -434,10 +434,10 @@ function buildAnswerSummary(quizData, selectedAnswers) {
 }
 
 function renderResult(payload, quizData) {
-  const summary = `<strong>${payload.name}</strong>, ban dung ${payload.score} cau.\nDe: ${payload.quizTitle}\nThoi gian nop: ${formatDate(payload.submittedAt)}`;
+  const summary = `<strong>${payload.name}</strong>, bạn đúng ${payload.score} câu.\nĐề: ${payload.quizTitle}\nThời gian nộp: ${formatDate(payload.submittedAt)}`;
   resultSummary.innerHTML = summary.replace(/\n/g, "<br>");
-  resultTime.textContent = `Con lai: ${formatTime(payload.timeLeft || 0)}`;
-  resultCoding.value = "Giao vien se cham phan tu luan sau.";
+  resultTime.textContent = `Còn lại: ${formatTime(payload.timeLeft || 0)}`;
+  resultCoding.value = "Giáo viên sẽ chấm phần tự luận sau.";
   buildAnswerSummary(quizData, payload.selectedAnswers || []);
 }
 
@@ -478,15 +478,13 @@ quizSelect.addEventListener("change", async () => {
     const data = await loadQuiz(file);
     setQuizInfo(data);
   } catch {
-    quizInfo.textContent = "Khong the doc de thi";
+    quizInfo.textContent = "Không thể đọc đề thi";
   }
 });
 
 if (quizFiles.length) {
   quizSelect.value = quizFiles[0].file;
   loadQuiz(quizFiles[0].file).then(setQuizInfo).catch(() => {
-    quizInfo.textContent = "Khong the doc de thi";
+    quizInfo.textContent = "Không thể đọc đề thi";
   });
 }
-
-hydrateFromStorage();
