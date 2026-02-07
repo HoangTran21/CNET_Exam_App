@@ -272,7 +272,7 @@ async function handleSubmit() {
   resultCard.style.display = "block";
   resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
   if (countdownId) clearInterval(countdownId);
-}
+
 
 function onResetBtnClick() {
   const confirmation = confirm("Em co chac chan muon lam lai? Du lieu hien tai se mat!");
