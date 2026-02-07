@@ -13,7 +13,7 @@
 <body>
   <div class="noise"></div>
   <header>
-    <img class="logo" src="logo.png" alt="CNET Logo" />
+    <img class="logo" src="logo_cnet_2.png" alt="CNET Logo" />
     <h1>Bài tập lập trình Python</h1>
   </header>
 
@@ -21,18 +21,18 @@
     <section class="card accent" id="setup-card">
       <div class="grid two">
         <div>
-          <label for="student-name">Ho va ten</label>
-          <input id="student-name" type="text" placeholder="Nhap ho ten" />
-          <div id="name-error" class="field-error">Vui long nhap ho va ten.</div>
+          <label for="student-name">Họ và tên</label>
+          <input id="student-name" type="text" placeholder="Nhập họ tên" />
+          <div id="name-error" class="field-error">Vui lòng nhập họ và tên.</div>
         </div>
         <div>
-          <label for="quiz-select">Chon de thi</label>
+          <label for="quiz-select">Chọn đề thi</label>
           <select id="quiz-select"></select>
         </div>
       </div>
       <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
-        <button id="start-btn">Bat dau</button>
-        <span class="pill" id="quiz-info">Chua co de thi</span>
+        <button id="start-btn">Bắt đầu</button>
+        <span class="pill" id="quiz-info">Chưa có đề thi</span>
       </div>
     </section>
 
@@ -41,17 +41,17 @@
         <span class="pill" id="quiz-title"></span>
         <span class="timer" id="timer">00:00</span>
       </div>
-      <h2 class="section-title">I. PHAN TRAC NGHIEM</h2>
+      <h2 class="section-title">I. PHẦN TRẮC NGHIỆM</h2>
       <div class="grid" id="questions"></div>
 
       <div class="grid" style="margin-top: 18px;">
-        <h2 class="section-title">II. PHAN TU LUAN (CODE)</h2>
+        <h2 class="section-title">II. PHẦN TỰ LUẬN (CODE)</h2>
         <div id="coding-list" class="coding-grid"></div>
       </div>
 
       <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
-        <button id="submit-btn">Nop bai</button>
-        <button id="reset-btn" type="button" class="btn-secondary">Lam lai</button>
+        <button id="submit-btn">Nộp bài</button>
+        <button id="reset-btn" type="button" class="btn-secondary">Làm lại</button>
       </div>
 
       <div class="result" id="result-box" style="margin-top: 16px;"></div>
@@ -59,12 +59,12 @@
 
     <section class="card" id="result-card" style="display: none;">
       <div class="quiz-meta">
-        <span class="pill">Ket qua</span>
+        <span class="pill">Kết quả</span>
         <span class="timer" id="result-time"></span>
       </div>
       <div class="result" id="result-summary" style="display: block;"></div>
       <div class="grid" style="margin-top: 16px;">
-        <label>Ket qua phan tu luan (Giao vien cham sau)</label>
+        <label>Kết quả phần tự luận (Giáo viên chấm sau)</label>
         <textarea id="result-coding" class="coding" readonly></textarea>
       </div>
       <div class="result-answers" id="result-answers"></div>

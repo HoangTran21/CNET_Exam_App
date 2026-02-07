@@ -24,6 +24,9 @@ const resultCoding = document.getElementById("result-coding");
 const resultTime = document.getElementById("result-time");
 const resultAnswers = document.getElementById("result-answers");
 
+// Set this after deploying your Google Apps Script Web App
+const DRIVE_UPLOAD_URL = "https://script.google.com/macros/s/AKfycby5wnble5UEdizrmn8YAbn9aqioc0iPB_au9UveuSGtKvuFKaQleGsd7smuq3EV48fg/exec";
+
 let currentQuiz = null;
 let countdownId = null;
 let timeLeft = 0;
@@ -210,7 +213,7 @@ async function handleStart() {
   }
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   if (!currentQuiz) return;
   const name = getStudentName();
   if (!name) return;
@@ -258,6 +261,7 @@ function handleSubmit() {
   const fileName = `${sanitizeFileName(currentQuiz.title)}_${sanitizeFileName(name)}.doc`;
   const wordHtml = buildWordHtml(payload, currentQuiz);
   downloadWordFile(fileName, wordHtml);
+  await uploadToDrive(fileName, wordHtml, payload);
   resultCard.style.display = "block";
   resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
   if (countdownId) clearInterval(countdownId);
@@ -329,6 +333,39 @@ function downloadWordFile(fileName, htmlContent) {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
+}
+
+async function uploadToDrive(fileName, htmlContent, payload) {
+  if (!DRIVE_UPLOAD_URL) {
+    console.log("DRIVE_UPLOAD_URL not set");
+    return;
+  }
+
+  console.log("Uploading to Drive:", fileName);
+  
+  try {
+    const response = await fetch(DRIVE_UPLOAD_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fileName,
+        htmlContent,
+        payload
+      })
+    });
+
+    console.log("Drive response status:", response.status);
+    const result = await response.json().catch(() => null);
+    console.log("Drive response:", result);
+    
+    if (!response.ok || !result?.ok) {
+      throw new Error(result?.error || "Upload failed");
+    }
+    resultBox.innerHTML += "<br><span style='color: green;'>✓ Da luu len Google Drive.</span>";
+  } catch (err) {
+    console.error("Drive upload error:", err);
+    resultBox.innerHTML += `<br><span style='color: red;'>✗ Khong the luu len Google Drive: ${err.message}</span>`;
+  }
 }
 
 function buildAnswerSummary(quizData, selectedAnswers) {
