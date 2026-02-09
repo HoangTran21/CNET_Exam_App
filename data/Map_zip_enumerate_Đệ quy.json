@@ -9,7 +9,12 @@
     },
     {
       "q": "Nếu dùng zip() với hai danh sách có độ dài khác nhau, kết quả sẽ như thế nào?",
-      "opts": ["Báo lỗi ValueError", "Dừng lại ở độ dài của danh sách ngắn nhất", "Điền None vào chỗ trống", "Lặp lại danh sách ngắn hơn"],
+      "opts": [
+        "Báo lỗi ValueError",
+        "Dừng lại ở độ dài của danh sách ngắn nhất",
+        "Điền None vào chỗ trống",
+        "Lặp lại danh sách ngắn hơn"
+      ],
       "ans": 1
     },
     {
@@ -18,18 +23,33 @@
       "ans": 2
     },
     {
-      "q": "Sự khác biệt của list.sort() so với hàm sorted() là gì?",
-      "opts": ["sort() trả về danh sách mới", "sort() thay đổi trực tiếp danh sách gốc", "sorted() chỉ dùng cho số", "Không có sự khác biệt"],
+      "q": "Sự khác biệt chính giữa list.sort() và sorted() là gì?",
+      "opts": [
+        "sort() trả về danh sách mới",
+        "sort() thay đổi trực tiếp danh sách gốc",
+        "sorted() chỉ dùng cho số",
+        "Không có sự khác biệt"
+      ],
       "ans": 1
     },
     {
       "q": "Trong đệ quy, 'trường hợp cơ sở' (base case) dùng để làm gì?",
-      "opts": ["Để gọi lại hàm", "Để tăng tốc độ", "Để dừng việc gọi đệ quy", "Để nhập dữ liệu"],
+      "opts": [
+        "Để gọi lại hàm",
+        "Để tăng tốc độ",
+        "Để dừng việc gọi đệ quy",
+        "Để nhập dữ liệu"
+      ],
       "ans": 2
     },
     {
-      "q": "Kết quả của: list(zip(['A', 'B'], [1, 2]))",
-      "opts": ["['A', 1, 'B', 2]", "[('A', 1), ('B', 2)]", "{'A': 1, 'B': 2}", "[('A', 'B'), (1, 2)]"],
+      "q": "Kết quả của biểu thức: list(zip(['A', 'B'], [1, 2])) là gì?",
+      "opts": [
+        "['A', 1, 'B', 2]",
+        "[('A', 1), ('B', 2)]",
+        "{'A': 1, 'B': 2}",
+        "[('A', 'B'), (1, 2)]"
+      ],
       "ans": 1
     },
     {
@@ -39,80 +59,123 @@
     },
     {
       "q": "Để sắp xếp danh sách L theo độ dài chuỗi tăng dần, ta dùng:",
-      "opts": ["L.sort()", "sorted(L, key=len)", "L.sort(reverse=True)", "map(len, L)"],
+      "opts": [
+        "L.sort()",
+        "sorted(L, key=len)",
+        "L.sort(reverse=True)",
+        "map(len, L)"
+      ],
       "ans": 1
     },
     {
       "q": "Lỗi RecursionError thường xảy ra khi nào?",
-      "opts": ["Thiếu trường hợp cơ sở", "Sai cú pháp vòng lặp", "Chia cho số 0", "Biến chưa khai báo"],
+      "opts": [
+        "Thiếu trường hợp cơ sở",
+        "Sai cú pháp vòng lặp",
+        "Chia cho số 0",
+        "Biến chưa khai báo"
+      ],
       "ans": 0
     },
     {
-      "q": "Kết quả của map(lambda x: x*2, [1, 2, 3]) khi chuyển sang list là:",
+      "q": "Kết quả của list(map(lambda x: x * 2, [1, 2, 3])) là:",
       "opts": ["[1, 2, 3, 1, 2, 3]", "[2, 4, 6]", "[1, 4, 9]", "[2, 2, 2]"],
       "ans": 1
     },
     {
-      "q": "Cú pháp để giải nén (unzip) một danh sách các tuple 'pairs' là gì?",
+      "q": "Cú pháp đúng để giải nén (unzip) một danh sách các tuple 'pairs' là:",
       "opts": ["unzip(pairs)", "zip(pairs)", "zip(*pairs)", "map(*pairs)"],
       "ans": 2
     },
     {
-      "q": "Hàm đệ quy factorial(3) với return n * factorial(n-1) trả về:",
+      "q": "Hàm đệ quy factorial(3) (với return n * factorial(n-1)) trả về:",
       "opts": ["3", "6", "9", "1"],
       "ans": 1
     },
     {
-      "q": "Trong sorted(), tham số nào dùng để đảo ngược thứ tự?",
+      "q": "Trong hàm sorted(), tham số nào dùng để đảo ngược thứ tự sắp xếp?",
       "opts": ["reverse=True", "backwards=True", "sort=desc", "flip=True"],
       "ans": 0
     },
     {
-      "q": "Lệnh enumerate(zip(a, b)) trả về mỗi phần tử có dạng gì?",
-      "opts": ["(index, a, b)", "(index, (a, b))", "((index, a), b)", "(a, b, index)"],
+      "q": "Lệnh enumerate(zip(a, b)) trả về mỗi phần tử có dạng:",
+      "opts": [
+        "(index, a, b)",
+        "(index, (a, b))",
+        "((index, a), b)",
+        "(a, b, index)"
+      ],
       "ans": 1
     },
     {
-      "q": "Hàm map() có thể nhận bao nhiêu iterable (danh sách)?",
-      "opts": ["Duy nhất 1", "Tối đa 2", "Không giới hạn (tùy số đối số của hàm)", "0"],
+      "q": "Hàm map() có thể nhận bao nhiêu iterable?",
+      "opts": [
+        "Duy nhất 1",
+        "Tối đa 2",
+        "Không giới hạn (phụ thuộc số tham số của hàm)",
+        "0"
+      ],
       "ans": 2
     },
     {
       "q": "Kết quả của sorted(['apple', 'Banana'], key=str.lower) là:",
-      "opts": ["['apple', 'Banana']", "['Banana', 'apple']", "['apple', 'banana']", "Lỗi"],
-      "ans": 1
+      "opts": [
+        "['apple', 'Banana']",
+        "['Banana', 'apple']",
+        "['apple', 'banana']",
+        "Lỗi"
+      ],
+      "ans": 0
     },
     {
-      "q": "Trường hợp cơ sở của hàm tính tổng từ 1 đến n (đệ quy) thường là:",
+      "q": "Trường hợp cơ sở thường dùng khi viết hàm đệ quy tính tổng từ 1 đến n là:",
       "opts": ["n == 0", "n == 1", "n > 1", "Không cần"],
       "ans": 0
     },
     {
-      "q": "Biến i trong: for i, v in enumerate(L) đại diện cho điều gì?",
-      "opts": ["Giá trị phần tử", "Địa chỉ ô nhớ", "Chỉ số (vị trí)", "Độ dài danh sách"],
+      "q": "Trong câu lệnh for i, v in enumerate(L), biến i đại diện cho:",
+      "opts": [
+        "Giá trị phần tử",
+        "Địa chỉ ô nhớ",
+        "Chỉ số (vị trí)",
+        "Độ dài danh sách"
+      ],
       "ans": 2
     },
     {
-      "q": "Hàm zip() trả về kiểu dữ liệu gì?",
+      "q": "Hàm zip() trong Python trả về kiểu dữ liệu nào?",
       "opts": ["List", "Zip object (iterator)", "Tuple", "Set"],
       "ans": 1
     },
     {
-      "q": "Đệ quy giúp giải quyết các bài toán có tính chất gì?",
-      "opts": ["Tính toán tuần tự", "Chia nhỏ thành các bài toán tương tự", "Cần nhập xuất liên tục", "Chỉ dùng cho số nguyên"],
+      "q": "Đệ quy thường được dùng để giải các bài toán có đặc điểm nào?",
+      "opts": [
+        "Tính toán tuần tự",
+        "Chia nhỏ thành các bài toán tương tự",
+        "Cần nhập xuất liên tục",
+        "Chỉ áp dụng cho số nguyên"
+      ],
       "ans": 1
     }
   ],
-  "coding_tasks": [
-    "Sử dụng map và lambda để bình phương tất cả các số trong một danh sách.",
-    "Dùng zip để kết hợp danh sách tên và danh sách điểm thành một dictionary.",
-    "Viết hàm đệ quy tính tổng các số từ 1 đến n.",
-    "Sử dụng enumerate để in ra các phần tử ở vị trí lẻ trong danh sách.",
-    "Sắp xếp danh sách các chuỗi theo thứ tự độ dài giảm dần bằng sorted().",
-    "Viết hàm đệ quy để đảo ngược một chuỗi không dùng slicing.",
-    "Dùng map và zip để tính tổng từng cặp phần tử tương ứng của hai danh sách.",
-    "Sắp xếp một danh sách các dictionary theo một key cụ thể (ví dụ: 'age').",
-    "Sử dụng zip(*data) để chuyển đổi danh sách các hàng thành danh sách các cột.",
-    "Viết hàm đệ quy tìm số Fibonacci thứ n."
-  ]
+"coding_tasks": [
+  "Cho danh sách số nguyên:\nL = [1, 2, 3, 4, 5].\nSử dụng map() và lambda để tạo ra danh sách mới chứa bình phương của mỗi phần tử trong L.",
+  
+  "Cho hai danh sách:\nnames = ['An', 'Binh', 'Chi'],\nscores = [8, 7, 9].\nSử dụng zip() để kết hợp hai danh sách này thành một dictionary, trong đó key là tên và value là điểm.",
+  
+  "Viết hàm đệ quy sum_to_n(n) để tính tổng các số từ 1 đến n (n ≥ 0).\nYêu cầu hàm phải có trường hợp cơ sở (base case) rõ ràng.",
+  
+  "Cho danh sách:\nL = ['a', 'b', 'c', 'd', 'e'].\nSử dụng enumerate() để in ra các phần tử ở vị trí lẻ (index lẻ).",
+  
+  "Cho danh sách chuỗi:\nL = ['apple', 'banana', 'kiwi', 'watermelon'].\nSử dụng sorted() để sắp xếp danh sách theo độ dài chuỗi giảm dần.",
+  
+  "Cho hai danh sách số:\na = [1, 2, 3],\nb = [4, 5, 6].\nSử dụng map() và zip() để tạo ra danh sách mới chứa tổng của các cặp phần tử tương ứng.",
+  
+  "Cho danh sách dictionary:\npeople = [\n  {'name': 'An', 'age': 20},\n  {'name': 'Binh', 'age': 18},\n  {'name': 'Chi', 'age': 22}\n].\nSử dụng sorted() để sắp xếp danh sách people theo tuổi (age) tăng dần.",
+  
+  "Cho danh sách:\ndata = [\n  (1, 2, 3),\n  (4, 5, 6),\n  (7, 8, 9)\n].\nSử dụng zip(*data) để chuyển đổi danh sách các hàng thành danh sách các cột.",
+  
+  "Viết hàm đệ quy fibonacci(n) để trả về số Fibonacci thứ n.\nBiết rằng fibonacci(0) = 0 và fibonacci(1) = 1."
+]
+
 }
