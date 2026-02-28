@@ -22,6 +22,16 @@
                     ],
             "ans": 3
         },
+                {
+            "q": "Ai từng vô địch World Cup?",
+            "opts": [
+                    "Cristiano Ronaldo",
+                    "Nguyễn Đình Bắc",
+                    "Lionel Messi",
+                    "Lê Văn Thành Nghĩa"
+                    ],
+            "ans": 2
+        },
         {
             "q": "Hàm gcd(a, b) thường được dùng để tính gì?",
             "opts": ["Bội chung nhỏ nhất", "Ước chung lớn nhất", "Tổng hai số", "Hiệu hai số"],
