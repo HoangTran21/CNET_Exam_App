@@ -1,5 +1,6 @@
 {
   "title": "Kiem_Tra_Python_Tet_Doi_Song_Map_Zip",
+  "time_seconds": 3600,
   "questions": [
     {
       "q": "Cho danh sách money = [50000, 100000, 200000]. Kết quả của list(map(lambda x: x + 10000, money)) là gì?",
@@ -131,11 +132,16 @@
       "opts": ["3", "2", "4", "30"],
       "ans": 0
     },
-        {
-      "q": "Cho guests = [10,20,30]. len(guests) trả về gì?",
-      "opts": ["3", "2", "4", "30"],
-      "ans": 0
-    }
+                {
+            "q": "Ai từng vô địch World Cup?",
+            "opts": [
+                    "Cristiano Ronaldo",
+                    "Nguyễn Đình Bắc",
+                    "Lionel Messi",
+                    "Harry Maguire"
+                    ],
+            "ans": 2
+        }
   ],
 
   "coding_tasks": [
