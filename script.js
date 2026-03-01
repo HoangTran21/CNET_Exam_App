@@ -1,7 +1,8 @@
 const quizFiles = [
   { label: "Module 1: Cơ bản", file: "data/module1.json" },
   { label: "Module 2: Thuật toán, Hàm, Các CTDL", file: "data/module2.json" },
-  { label: "Map-Zip-Đệ quy", file: "data/Map_zip_enumerate_Đệ quy.json" }
+  { label: "Map-Zip-Đệ quy", file: "data/Map_zip_enumerate_Đệ quy.json" },
+  { label: "Ôn tập map, zip, enumerate, CTDL", file: "data/Ôn tập cho Lâm.json" }
 ];
 
 const quizSelect = document.getElementById("quiz-select");

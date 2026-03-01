@@ -17,10 +17,16 @@ class FileHandler:
     def get_available_modules():
         modules = {}
         if os.path.exists(DATA_FOLDER):
-            files = [f for f in os.listdir(DATA_FOLDER) if f.endswith(".json")]
+            files = sorted(
+                [f for f in os.listdir(DATA_FOLDER) if f.endswith(".json")],
+                key=lambda name: name.casefold()
+            )
             for f in files:
-                pretty_name = f.replace(".json", "").replace("module", "Module ").capitalize()
-                display_name = f"📝 Bài tập {pretty_name}"
+                pretty_name = os.path.splitext(f)[0]
+                if pretty_name.lower().startswith("module"):
+                    suffix = pretty_name[6:].strip()
+                    pretty_name = f"Module {suffix}" if suffix else "Module"
+                display_name = f"📝 Đề thi {pretty_name}"
                 modules[display_name] = f
         return modules
 

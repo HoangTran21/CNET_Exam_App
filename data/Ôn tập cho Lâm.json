@@ -1,0 +1,152 @@
+{
+  "title": "Kiem_Tra_Python_Tet_Doi_Song_Map_Zip",
+  "questions": [
+    {
+      "q": "Cho danh sách money = [50000, 100000, 200000]. Kết quả của list(map(lambda x: x + 10000, money)) là gì?",
+      "opts": [
+        "[60000, 110000, 210000]",
+        "[50000, 100000, 200000]",
+        "[10000, 10000, 10000]",
+        "Lỗi"
+      ],
+      "ans": 0
+    },
+    {
+      "q": "Cho foods = ['banh chung', 'gio lua'] và prices = [100000, 80000]. list(zip(foods, prices)) trả về gì?",
+      "opts": [
+        "[('banh chung', 100000), ('gio lua', 80000)]",
+        "{'banh chung':100000,'gio lua':80000}",
+        "['banh chung', 'gio lua', 100000, 80000]",
+        "Lỗi"
+      ],
+      "ans": 0
+    },
+    {
+      "q": "Cho guests = [10, 20, 15]. Hàm sum(guests) trả về gì?",
+      "opts": ["45", "30", "35", "15"],
+      "ans": 0
+    },
+    {
+      "q": "Cho data = dict(zip(['Mai', 'Dao'], [5, 3])). data['Mai'] bằng bao nhiêu?",
+      "opts": ["5", "3", "Mai", "Lỗi"],
+      "ans": 0
+    },
+    {
+      "q": "Hàm max([10, 25, 15]) trả về gì?",
+      "opts": ["25", "15", "10", "Lỗi"],
+      "ans": 0
+    },
+    {
+      "q": "Cho flowers = ['dao','mai','cuc'] và sold = [30,20,10]. dict(zip(flowers,sold)) tạo ra kiểu dữ liệu gì?",
+      "opts": ["Dictionary", "List", "Tuple", "Set"],
+      "ans": 0
+    },
+    {
+      "q": "Lệnh sorted([3,1,2]) trả về gì?",
+      "opts": ["[1, 2, 3]", "[3, 2, 1]", "[1, 3, 2]", "Lỗi"],
+      "ans": 0
+    },
+    {
+      "q": "Trong Python, lambda thường được dùng để làm gì?",
+      "opts": [
+        "Tạo hàm ngắn gọn",
+        "Tạo vòng lặp",
+        "Tạo dictionary",
+        "Tạo file"
+      ],
+      "ans": 0
+    },
+    {
+      "q": "Cho items = ['banh chung', 'mut', 'keo']. len(items) bằng bao nhiêu?",
+      "opts": ["3", "2", "4", "1"],
+      "ans": 0
+    },
+    {
+      "q": "Cho money = [10000, 20000, 30000]. max(money) trả về?",
+      "opts": ["30000", "10000", "20000", "Lỗi"],
+      "ans": 0
+    },
+    {
+      "q": "Hàm min([8,5,9,3]) trả về gì?",
+      "opts": ["3", "5", "8", "9"],
+      "ans": 0
+    },
+    {
+      "q": "Cho prices = [100,200,300]. sum(prices) bằng bao nhiêu?",
+      "opts": ["600", "300", "500", "100"],
+      "ans": 0
+    },
+    {
+      "q": "Cho dict d = {'dao':5,'mai':3}. d.keys() trả về gì?",
+      "opts": ["Các key", "Các value", "Tuple", "List số"],
+      "ans": 0
+    },
+    {
+      "q": "Cho dict d = {'banh chung':4,'mut':2}. d.values() trả về gì?",
+      "opts": ["Các giá trị", "Các key", "Tuple", "Chuỗi"],
+      "ans": 0
+    },
+    {
+      "q": "Kết quả của list(zip([1,2],[3,4])) là gì?",
+      "opts": [
+        "[(1,3),(2,4)]",
+        "[1,2,3,4]",
+        "{1:3,2:4}",
+        "[(1,2),(3,4)]"
+      ],
+      "ans": 0
+    },
+    {
+      "q": "sorted(['dao','mai','cuc'], key=len) sắp xếp theo gì?",
+      "opts": [
+        "Độ dài chuỗi",
+        "Chữ cái",
+        "Số",
+        "Không sắp xếp"
+      ],
+      "ans": 0
+    },
+    {
+      "q": "Cho guests = [5,10,15]. guests[1] bằng bao nhiêu?",
+      "opts": ["10", "5", "15", "Lỗi"],
+      "ans": 0
+    },
+    {
+      "q": "Trong Python, zip() thường dùng để làm gì?",
+      "opts": [
+        "Ghép các danh sách",
+        "Sắp xếp danh sách",
+        "Tính tổng",
+        "Đảo ngược danh sách"
+      ],
+      "ans": 0
+    },
+    {
+      "q": "Cho L = [1,2,3]. list(map(lambda x: x*2, L)) trả về gì?",
+      "opts": ["[2,4,6]", "[1,2,3]", "[1,4,9]", "[2,2,2]"],
+      "ans": 0
+    },
+    {
+      "q": "Cho guests = [10,20,30]. len(guests) trả về gì?",
+      "opts": ["3", "2", "4", "30"],
+      "ans": 0
+    },
+        {
+      "q": "Cho guests = [10,20,30]. len(guests) trả về gì?",
+      "opts": ["3", "2", "4", "30"],
+      "ans": 0
+    }
+  ],
+
+  "coding_tasks": [
+    "Gia đình đi chợ Tết mua các món:\nitems = ['banh chung','mut','keo']\nquantity = [2,3,5]\nprice = [100000,80000,50000]\nSử dụng zip() để tính tổng tiền của từng món.",
+    
+    "Cho danh sách tiền lì xì:\nmoney = [50000,100000,200000,50000]\nSử dụng map() và lambda để tăng thêm 10000 đồng cho mỗi giá trị.",
+    
+    "Cho danh sách số khách đến chúc Tết mỗi ngày:\nguests = [10,20,15,25]\nViết chương trình tìm ngày có nhiều khách nhất.",
+    
+    "Cho danh sách hoa bán được:\nflowers = ['dao','mai','cuc']\nsold = [30,20,40]\nSử dụng zip() để tạo dictionary và tìm loại hoa bán nhiều nhất.",
+    
+    "Cho danh sách món ăn ngày Tết:\nfoods = ['banh chung','gio lua','nem ran','mut dua']\nSử dụng sorted() để sắp xếp danh sách theo độ dài tên món ăn."
+  ]
+}
