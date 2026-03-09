@@ -1,0 +1,102 @@
+{
+  "title": "Bài kiểm tra giải toán",
+  "time_seconds": 7200,
+  "questions": [
+    {
+      "q": "Để nhập một số nguyên từ bàn phím trong Python, bạn sử dụng cú pháp nào?",
+      "opts": ["int(input())", "input()", "float(input())", "str(input())"],
+      "ans": 0
+    },
+    {
+      "q": "Lệnh nào dùng để in kết quả ra màn hình?",
+      "opts": ["print()", "output()", "show()", "display()"],
+      "ans": 0
+    },
+    {
+      "q": "Trong Python, toán tử nào dùng để chia lấy phần dư?",
+      "opts": ["%", "//", "/", "mod"],
+      "ans": 0
+    },
+    {
+      "q": "Trong Python, toán tử nào dùng để chia lấy phần nguyên?",
+      "opts": ["//", "%", "/", "div"],
+      "ans": 0
+    },
+    {
+      "q": "Để kiểm tra hai giá trị có bằng nhau hay không, ta dùng ký hiệu nào?",
+      "opts": ["==", "=", "!=", "is"],
+      "ans": 0
+    },
+    {
+      "q": "Cấu trúc nào dùng để lặp với số lần biết trước (ví dụ in bảng cửu chương từ 2 đến 9)?",
+      "opts": ["Vòng lặp for", "Cấu trúc if-else", "Vòng lặp while", "Hàm print"],
+      "ans": 0
+    },
+    {
+      "q": "Giá trị của biểu thức 5 % 2 là bao nhiêu?",
+      "opts": ["1", "2", "2.5", "0"],
+      "ans": 0
+    },
+    {
+      "q": "Trong bài toán tính giai thừa n!, nếu dùng vòng lặp, ta nên khởi tạo biến tích ban đầu là bao nhiêu?",
+      "opts": ["1", "0", "-1", "n"],
+      "ans": 0
+    },
+    {
+      "q": "Để kiểm tra số n có chia hết cho 2 hay không, điều kiện nào sau đây đúng?",
+      "opts": ["n % 2 == 0", "n / 2 == 0", "n // 2 == 0", "n % 2 == 1"],
+      "ans": 0
+    },
+    {
+      "q": "Thư viện nào cung cấp hàm sqrt() để tính căn bậc hai?",
+      "opts": ["math", "random", "time", "os"],
+      "ans": 0
+    },
+    {
+      "q": "Công thức giải nghiệm x của phương trình ax + b = 0 (với a khác 0) là gì?",
+      "opts": ["x = -b / a", "x = b / a", "x = -a / b", "x = a - b"],
+      "ans": 0
+    },
+    {
+      "q": "Biểu thức Delta (Δ) trong phương trình bậc hai ax² + bx + c = 0 được viết trong Python là gì?",
+      "opts": ["b**2 - 4*a*c", "b*2 - 4*a*c", "b^2 - 4ac", "b**2 + 4*a*c"],
+      "ans": 0
+    },
+    {
+      "q": "Lệnh nào dùng để tạo một số nguyên ngẫu nhiên trong thư viện random?",
+      "opts": ["random.randint()", "random.random()", "random.choice()", "random.range()"],
+      "ans": 0
+    },
+    {
+      "q": "Để dừng một vòng lặp ngay lập tức khi thỏa mãn một điều kiện nào đó, ta dùng lệnh gì?",
+      "opts": ["break", "continue", "stop", "exit"],
+      "ans": 0
+    },
+    {
+      "q": "Nếu muốn kiểm tra nhiều điều kiện khác nhau trong cấu trúc rẽ nhánh, ta dùng từ khóa nào sau 'if'?",
+      "opts": ["elif", "else if", "else", "then"],
+      "ans": 0
+    }
+  ],
+  "coding_tasks": [
+    "Tính tổng hai số \n Viết chương trình nhập hai số nguyên, sau đó in ra tổng của chúng.",
+    
+    "Tính tổng hai số \n Viết chương trình nhập hai số nguyên, sau đó in ra tổng của chúng.",
+    
+    "Giải phương trình bậc nhất \n Giải phương trình ax + b = 0",
+    
+    "Tính giai thừa \n Nhập số nguyên n ≥ 0, tính n!",
+    
+    "Kiểm tra số nguyên tố \n Nhập số nguyên n, kiểm tra có phải số nguyên tố không.",
+
+    "Tìm UCLN của hai số. Gợi ý: Dùng thuật toán Euclid.",
+
+    "Chuyển đổi đơn vị thời gian. Nhập số giây, chuyển sang phút và giây.",
+
+    "Bảng cửu chương \n In bảng cửu chương từ 2 đến 9.",
+
+    "Giải phương trình bậc 2 \n Giải ax² + bx + c = 0 (có thể dùng math.sqrt)",
+
+    "Trò chơi đoán số \n Máy chọn ngẫu nhiên 1 số từ 1–100, người dùng đoán đến khi đúng."
+  ]
+}
