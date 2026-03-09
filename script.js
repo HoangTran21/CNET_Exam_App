@@ -25,12 +25,81 @@ const resultCoding = document.getElementById("result-coding");
 const resultTime = document.getElementById("result-time");
 const resultAnswers = document.getElementById("result-answers");
 
+const LAST_SUBMIT_KEY = "cnet_exam_last_submit";
+const DRAFT_KEY = "cnet_exam_draft";
+const AUTO_SAVE_INTERVAL_MS = 5000;
+
 // Set this after deploying your Google Apps Script Web App
-const DRIVE_UPLOAD_URL = "https://script.google.com/macros/s/AKfycbxMryw41yc86Y1ySkYEb8W7P3nyEEqmE7JveepltgbJp6CH-AjxgGsWjM0tQwozhtmQ/exec";
+const DRIVE_UPLOAD_URL = "https://script.google.com/macros/s/AKfycbyW5ySDw6u76JUv9Nk2059SlrpRQftZearZmfpTwgazP03RpbEp8sdz5QZ05M3e2d0w/exec";
 
 let currentQuiz = null;
 let countdownId = null;
 let timeLeft = 0;
+let lastAutoSaveAt = 0;
+
+function ensureConfirmModal() {
+  let modal = document.getElementById("app-confirm-modal");
+  if (modal) return modal;
+
+  modal = document.createElement("div");
+  modal.id = "app-confirm-modal";
+  modal.className = "app-modal";
+  modal.innerHTML = `
+    <div class="app-modal-backdrop" data-close="backdrop"></div>
+    <div class="app-modal-panel" role="dialog" aria-modal="true" aria-labelledby="app-modal-title">
+      <h3 id="app-modal-title" class="app-modal-title"></h3>
+      <p class="app-modal-message"></p>
+      <div class="app-modal-actions">
+        <button type="button" class="app-modal-btn app-modal-btn-cancel">Hủy</button>
+        <button type="button" class="app-modal-btn app-modal-btn-confirm">Xác nhận</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  return modal;
+}
+
+function showConfirmDialog({ title, message, confirmText = "Xác nhận", cancelText = "Hủy", danger = false }) {
+  const modal = ensureConfirmModal();
+  const titleEl = modal.querySelector(".app-modal-title");
+  const messageEl = modal.querySelector(".app-modal-message");
+  const cancelBtn = modal.querySelector(".app-modal-btn-cancel");
+  const confirmBtn = modal.querySelector(".app-modal-btn-confirm");
+  const backdrop = modal.querySelector(".app-modal-backdrop");
+
+  titleEl.textContent = title || "Xác nhận";
+  messageEl.textContent = message || "Bạn có muốn tiếp tục không?";
+  cancelBtn.textContent = cancelText;
+  confirmBtn.textContent = confirmText;
+  confirmBtn.classList.toggle("danger", !!danger);
+
+  modal.classList.add("show");
+  document.body.classList.add("modal-open");
+
+  return new Promise((resolve) => {
+    const cleanup = (result) => {
+      modal.classList.remove("show");
+      document.body.classList.remove("modal-open");
+      cancelBtn.removeEventListener("click", onCancel);
+      confirmBtn.removeEventListener("click", onConfirm);
+      backdrop.removeEventListener("click", onCancel);
+      window.removeEventListener("keydown", onEsc);
+      resolve(result);
+    };
+
+    const onCancel = () => cleanup(false);
+    const onConfirm = () => cleanup(true);
+    const onEsc = (event) => {
+      if (event.key === "Escape") onCancel();
+    };
+
+    cancelBtn.addEventListener("click", onCancel);
+    confirmBtn.addEventListener("click", onConfirm);
+    backdrop.addEventListener("click", onCancel);
+    window.addEventListener("keydown", onEsc);
+    confirmBtn.focus();
+  });
+}
 
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60).toString().padStart(2, "0");
@@ -50,11 +119,75 @@ function setTimer(seconds) {
       handleSubmit();
     }
     timerEl.textContent = formatTime(timeLeft);
+    saveDraft();
   }, 1000);
 }
 
 function clearQuestions() {
   questionsEl.innerHTML = "";
+}
+
+function getSelectedAnswersFromUI() {
+  return Array.from(questionsEl.querySelectorAll(".question")).map((qEl) => {
+    const selected = qEl.querySelector("input[type=radio]:checked");
+    return selected ? Number(selected.value) : -1;
+  });
+}
+
+function setSelectedAnswersToUI(selectedAnswers) {
+  if (!Array.isArray(selectedAnswers)) return;
+  selectedAnswers.forEach((answerIdx, qIdx) => {
+    if (typeof answerIdx !== "number" || answerIdx < 0) return;
+    const radio = questionsEl.querySelector(`input[name="q${qIdx}"][value="${answerIdx}"]`);
+    if (radio) radio.checked = true;
+  });
+
+  Array.from(questionsEl.querySelectorAll(".question")).forEach((qEl) => {
+    const optionEls = qEl.querySelectorAll(".option");
+    optionEls.forEach((optEl) => {
+      const radio = optEl.querySelector("input[type=radio]");
+      optEl.classList.toggle("selected", !!radio?.checked);
+    });
+  });
+}
+
+function getCodingAnswersFromUI() {
+  return Array.from(codingList.querySelectorAll("textarea")).map((el) => el.value);
+}
+
+function setCodingAnswersToUI(codingAnswers) {
+  if (!Array.isArray(codingAnswers)) return;
+  const textareas = Array.from(codingList.querySelectorAll("textarea"));
+  textareas.forEach((el, idx) => {
+    el.value = codingAnswers[idx] || "";
+  });
+}
+
+function buildDraftPayload() {
+  if (!currentQuiz) return null;
+  return {
+    name: nameInput.value.trim(),
+    quizFile: quizSelect.value,
+    quizTitle: currentQuiz.title,
+    timeLeft,
+    selectedAnswers: getSelectedAnswersFromUI(),
+    codingAnswers: getCodingAnswersFromUI(),
+    savedAt: new Date().toISOString()
+  };
+}
+
+function saveDraft(force = false) {
+  if (!currentQuiz) return;
+  const now = Date.now();
+  if (!force && now - lastAutoSaveAt < AUTO_SAVE_INTERVAL_MS) return;
+  const draft = buildDraftPayload();
+  if (!draft) return;
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  lastAutoSaveAt = now;
+}
+
+function clearDraft() {
+  localStorage.removeItem(DRAFT_KEY);
 }
 
 function setNameError(message) {
@@ -209,15 +342,22 @@ async function handleStart() {
     setupCard.style.display = "none";
     quizCard.style.display = "block";
     resultCard.style.display = "none";
+    saveDraft(true);
   } catch (err) {
     alert(err.message || "Có lỗi xảy ra");
   }
 }
 
-function onSubmitBtnClick() {
-  const confirmation = confirm("Em chắc chắn muốn nộp bài không? Không thể sửa lại sau đó!");
+async function onSubmitBtnClick() {
+  const confirmation = await showConfirmDialog({
+    title: "Xác nhận nộp bài",
+    message: "Em chắc chắn muốn nộp bài không? Sau khi nộp sẽ không thể sửa lại.",
+    confirmText: "Nộp bài",
+    cancelText: "Quay lại",
+    danger: true
+  });
   if (confirmation) {
-    handleSubmit();
+    await handleSubmit();
   }
 }
 
@@ -259,7 +399,8 @@ async function handleSubmit() {
     selectedAnswers
   };
 
-  localStorage.setItem("cnet_exam_last_submit", JSON.stringify(payload));
+  localStorage.setItem(LAST_SUBMIT_KEY, JSON.stringify(payload));
+  clearDraft();
 
   const summaryHtml = `<strong>${name}</strong>, bạn đúng ${correct}/${total} câu.\nĐề: ${currentQuiz.title}`;
   resultBox.innerHTML = summaryHtml.replace(/\n/g, "<br>");
@@ -268,8 +409,15 @@ async function handleSubmit() {
   renderResult(payload, currentQuiz);
   const fileName = `${sanitizeFileName(currentQuiz.title)}_${sanitizeFileName(name)}_${new Date().toISOString().slice(0,16).replace(/:/g,'-')}.doc`;
   const wordHtml = buildWordHtml(payload, currentQuiz);
+
+  const drivePayload = {
+    ...payload,
+    questionResults: buildDetailedQuestionResults(currentQuiz, selectedAnswers)
+  };
+
   downloadWordFile(fileName, wordHtml);
   resultBox.innerHTML += "<br><span style='color: green;'>✓ File đã tải về. Gửi file cho giáo viên qua Zalo.</span>";
+  await uploadToDrive(fileName, wordHtml, drivePayload);
   resultCard.style.display = "block";
   resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
   if (countdownId) clearInterval(countdownId);
@@ -291,6 +439,7 @@ function handleReset() {
   currentQuiz = null;
   if (countdownId) clearInterval(countdownId);
   timerEl.textContent = "00:00";
+  clearDraft();
 }
 
 function formatDate(value) {
@@ -303,6 +452,23 @@ function formatDate(value) {
 
 function sanitizeFileName(value) {
   return value.replace(/[\\/:*?"<>|]/g, "_").replace(/\s+/g, " ").trim();
+}
+
+function buildDetailedQuestionResults(quizData, selectedAnswers) {
+  if (!quizData?.questions?.length) return [];
+  return quizData.questions.map((q, idx) => {
+    const picked = selectedAnswers?.[idx] ?? -1;
+    const correctIdx = q.ans;
+    return {
+      index: idx + 1,
+      question: q.q,
+      pickedIndex: picked,
+      pickedText: picked === -1 ? "(Bỏ trống)" : q.opts[picked],
+      correctIndex: correctIdx,
+      correctText: q.opts[correctIdx],
+      isCorrect: picked === correctIdx
+    };
+  });
 }
 
 function buildWordHtml(payload, quizData) {
@@ -363,6 +529,7 @@ async function uploadToDrive(fileName, htmlContent, payload) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        secret: "cnet_secret_2026",
         fileName,
         htmlContent,
         payload
@@ -376,10 +543,10 @@ async function uploadToDrive(fileName, htmlContent, payload) {
     if (!response.ok || !result?.ok) {
       throw new Error(result?.error || "Upload failed");
     }
-    resultBox.innerHTML += "<br><span style='color: green;'>✓ Da luu len Google Drive.</span>";
+    resultBox.innerHTML += "<br><span style='color: green;'>✓ Đã lưu lên Google Drive.</span>";
   } catch (err) {
     console.error("Drive upload error:", err);
-    resultBox.innerHTML += `<br><span style='color: red;'>✗ Khong the luu len Google Drive: ${err.message}</span>`;
+    resultBox.innerHTML += `<br><span style='color: red;'>✗ Không thể lưu lên Google Drive: ${err.message}</span>`;
   }
 }
 
@@ -443,7 +610,7 @@ function renderResult(payload, quizData) {
 }
 
 async function hydrateFromStorage() {
-  const raw = localStorage.getItem("cnet_exam_last_submit");
+  const raw = localStorage.getItem(LAST_SUBMIT_KEY);
   if (!raw) return;
   try {
     const payload = JSON.parse(raw);
@@ -455,10 +622,66 @@ async function hydrateFromStorage() {
   }
 }
 
+async function restoreDraftIfExists() {
+  const raw = localStorage.getItem(DRAFT_KEY);
+  if (!raw) return;
+
+  let draft;
+  try {
+    draft = JSON.parse(raw);
+  } catch {
+    clearDraft();
+    return;
+  }
+
+  if (!draft?.quizFile) {
+    clearDraft();
+    return;
+  }
+
+  const savedAt = draft.savedAt ? formatDate(draft.savedAt) : "gần đây";
+  const wantRestore = await showConfirmDialog({
+    title: "Phát hiện bài chưa nộp",
+    message: `Hệ thống phát hiện bài làm chưa nộp (lưu lúc ${savedAt}). Em có muốn khôi phục không?`,
+    confirmText: "Khôi phục",
+    cancelText: "Bỏ qua"
+  });
+  if (!wantRestore) return;
+
+  try {
+    currentQuiz = await loadQuiz(draft.quizFile);
+    quizSelect.value = draft.quizFile;
+    setQuizInfo(currentQuiz);
+    quizTitle.textContent = currentQuiz.title;
+    buildQuestions(currentQuiz.questions || []);
+    renderCodingTasks(normalizeCodingTasks(currentQuiz));
+
+    const defaultTime = currentQuiz.time_seconds || 900;
+    const restoredTime = Number(draft.timeLeft);
+    setTimer(restoredTime > 0 ? restoredTime : defaultTime);
+
+    nameInput.value = draft.name || "";
+    setSelectedAnswersToUI(draft.selectedAnswers);
+    setCodingAnswersToUI(draft.codingAnswers);
+
+    resultBox.style.display = "none";
+    resultBox.textContent = "";
+    setupCard.style.display = "none";
+    quizCard.style.display = "block";
+    resultCard.style.display = "none";
+    saveDraft(true);
+  } catch {
+    alert("Không thể khôi phục bài cũ. Có thể đề thi đã thay đổi hoặc không tải được dữ liệu.");
+  }
+}
+
 startBtn.addEventListener("click", handleStart);
 submitBtn.addEventListener("click", onSubmitBtnClick);
 resetBtn.addEventListener("click", onResetBtnClick);
-nameInput.addEventListener("input", () => setNameError(""));
+nameInput.addEventListener("input", () => {
+  setNameError("");
+  if (currentQuiz) saveDraft(true);
+});
 
 questionsEl.addEventListener("change", (event) => {
   const target = event.target;
@@ -469,6 +692,15 @@ questionsEl.addEventListener("change", (event) => {
     const option = radio.closest(".option");
     if (option) option.classList.toggle("selected", radio.checked);
   });
+  saveDraft(true);
+});
+
+codingList.addEventListener("input", () => {
+  saveDraft(true);
+});
+
+window.addEventListener("beforeunload", () => {
+  saveDraft(true);
 });
 
 buildSelect();
@@ -489,3 +721,6 @@ if (quizFiles.length) {
     quizInfo.textContent = "Không thể đọc đề thi";
   });
 }
+
+hydrateFromStorage();
+restoreDraftIfExists();

@@ -350,6 +350,92 @@ button:active { transform: translateY(0); }
   margin-top: 20px;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
+.app-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+}
+
+.app-modal.show {
+  display: block;
+}
+
+.app-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.app-modal-panel {
+  position: relative;
+  width: min(520px, calc(100vw - 28px));
+  margin: min(20vh, 140px) auto 0;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.28);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  animation: modalIn 180ms ease-out;
+}
+
+.app-modal-title {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+}
+
+.app-modal-message {
+  margin: 12px 0 0;
+  color: #334155;
+  line-height: 1.55;
+}
+
+.app-modal-actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.app-modal-btn {
+  min-width: 106px;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+.app-modal-btn-cancel {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.app-modal-btn-confirm {
+  background: linear-gradient(120deg, var(--brand), var(--brand-2));
+  color: #ffffff;
+}
+
+.app-modal-btn-confirm.danger {
+  background: linear-gradient(120deg, #dc2626, #f97316);
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (min-width: 860px) {
   .layout { grid-template-columns: 1fr; }
 }
