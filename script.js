@@ -30,12 +30,13 @@ const DRAFT_KEY = "cnet_exam_draft";
 const AUTO_SAVE_INTERVAL_MS = 5000;
 
 // Set this after deploying your Google Apps Script Web App
-const DRIVE_UPLOAD_URL = "https://script.google.com/macros/s/AKfycbyW5ySDw6u76JUv9Nk2059SlrpRQftZearZmfpTwgazP03RpbEp8sdz5QZ05M3e2d0w/exec";
+const DRIVE_UPLOAD_URL = "https://script.google.com/macros/s/AKfycbz4ExRFCcAw0uzdkG3kDPhVhMha-KN7x32NgF5gc8BbQTpTIQzX7okwCdEGQhEY3Ts/exec";
 
 let currentQuiz = null;
 let countdownId = null;
 let timeLeft = 0;
 let lastAutoSaveAt = 0;
+let isSubmitted = false;
 
 function ensureConfirmModal() {
   let modal = document.getElementById("app-confirm-modal");
@@ -177,7 +178,7 @@ function buildDraftPayload() {
 }
 
 function saveDraft(force = false) {
-  if (!currentQuiz) return;
+  if (!currentQuiz || isSubmitted) return;
   const now = Date.now();
   if (!force && now - lastAutoSaveAt < AUTO_SAVE_INTERVAL_MS) return;
   const draft = buildDraftPayload();
@@ -365,6 +366,11 @@ async function handleSubmit() {
   if (!currentQuiz) return;
   const name = getStudentName();
   if (!name) return;
+  
+  // Clear draft and mark as submitted to prevent auto-save
+  clearDraft();
+  isSubmitted = true;
+  
   const answers = Array.from(questionsEl.querySelectorAll(".question"));
   const selectedAnswers = [];
   let correct = 0;
@@ -400,7 +406,6 @@ async function handleSubmit() {
   };
 
   localStorage.setItem(LAST_SUBMIT_KEY, JSON.stringify(payload));
-  clearDraft();
 
   const summaryHtml = `<strong>${name}</strong>, bạn đúng ${correct}/${total} câu.\nĐề: ${currentQuiz.title}`;
   resultBox.innerHTML = summaryHtml.replace(/\n/g, "<br>");
@@ -437,6 +442,7 @@ function handleReset() {
   clearQuestions();
   codingList.innerHTML = "";
   currentQuiz = null;
+  isSubmitted = false;
   if (countdownId) clearInterval(countdownId);
   timerEl.textContent = "00:00";
   clearDraft();
@@ -623,6 +629,9 @@ async function hydrateFromStorage() {
 }
 
 async function restoreDraftIfExists() {
+  // Don't restore if already submitted
+  if (isSubmitted) return;
+  
   const raw = localStorage.getItem(DRAFT_KEY);
   if (!raw) return;
 
