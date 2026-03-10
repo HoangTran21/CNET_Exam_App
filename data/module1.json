@@ -101,7 +101,27 @@
       "q": "Cách kiểm tra số chẵn đúng là:",
       "opts": ["n / 2 == 0", "n % 2 == 0", "n // 2 == 0", "n == 2"],
       "ans": 1
-    }
+    },
+    {
+            "q": "Mã điện thoại Việt Nam là?",
+            "opts": [
+                    "+36",
+                    "+67",
+                    "+84",
+                    "+97"
+                    ],
+            "ans": 2
+        },
+        {
+            "q": "67 là kiểu dữ liệu gì?",
+            "opts": [
+                    "String (Chuỗi)",
+                    "Integer (Số nguyên)",
+                    "Float (Số thực)",
+                    "Boolean (Giá trị đúng/sai)"
+                    ],
+            "ans": 2
+        }
   ],
   "coding_tasks": [
     "In các số từ 1 đến 10 bằng while hoặc for.",
