@@ -31,7 +31,7 @@ const DRAFT_KEY = "cnet_exam_draft";
 const AUTO_SAVE_INTERVAL_MS = 5000;
 
 // Set this after deploying your Google Apps Script Web App
-const DRIVE_UPLOAD_URL = "https://script.google.com/macros/s/AKfycbz4ExRFCcAw0uzdkG3kDPhVhMha-KN7x32NgF5gc8BbQTpTIQzX7okwCdEGQhEY3Ts/exec";
+const DRIVE_UPLOAD_URL = "https://script.google.com/macros/s/AKfycbySaAci7r2Y67mFGBd5uhm1LKw2TMEVcX86rfALHeal5qo_OHZbSoK_OfWN4C7HG4U8/exec";
 
 let currentQuiz = null;
 let countdownId = null;
@@ -530,17 +530,19 @@ async function uploadToDrive(fileName, htmlContent, payload) {
   }
 
   console.log("Uploading to Drive:", fileName);
+  const requestBody = JSON.stringify({
+    secret: "cnet_secret_2026",
+    fileName,
+    htmlContent,
+    payload
+  });
+  let primaryError = null;
   
   try {
     const response = await fetch(DRIVE_UPLOAD_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        secret: "cnet_secret_2026",
-        fileName,
-        htmlContent,
-        payload
-      })
+      body: requestBody
     });
 
     console.log("Drive response status:", response.status);
@@ -551,9 +553,28 @@ async function uploadToDrive(fileName, htmlContent, payload) {
       throw new Error(result?.error || "Upload failed");
     }
     resultBox.innerHTML += "<br><span style='color: green;'>✓ Đã lưu lên Google Drive.</span>";
+    return;
   } catch (err) {
-    console.error("Drive upload error:", err);
-    resultBox.innerHTML += `<br><span style='color: red;'>✗ Không thể lưu lên Google Drive: ${err.message}</span>`;
+    primaryError = err;
+    console.warn("Primary Drive upload failed, trying no-cors fallback:", err);
+  }
+
+  try {
+    // Fallback for Apps Script deployments that block CORS preflight.
+    // This sends the request as an opaque response; check Drive folder to confirm file creation.
+    await fetch(DRIVE_UPLOAD_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: requestBody,
+      keepalive: true
+    });
+
+    resultBox.innerHTML += "<br><span style='color: #b26a00;'>⚠ Đã gửi bài theo chế độ tương thích mạng. Vui lòng kiểm tra thư mục Google Drive để xác nhận file đã lưu.</span>";
+  } catch (fallbackErr) {
+    console.error("Drive upload fallback error:", fallbackErr);
+    const msg = primaryError?.message || fallbackErr.message;
+    resultBox.innerHTML += `<br><span style='color: red;'>✗ Không thể lưu lên Google Drive: ${msg}</span>`;
   }
 }
 
