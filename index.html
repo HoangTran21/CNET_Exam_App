@@ -41,11 +41,18 @@
         <span class="pill" id="quiz-title"></span>
         <span class="timer" id="timer">00:00</span>
       </div>
-      <h2 class="section-title">I. PHẦN TRẮC NGHIỆM</h2>
+      <h2 class="section-title" id="mcq-title">I. PHẦN TRẮC NGHIỆM</h2>
       <div class="grid" id="questions"></div>
 
+      <div id="prompt-image-section" style="display: none; margin-top: 8px;">
+        <h2 class="section-title">ĐỀ TỰ LUẬN (ẢNH)</h2>
+        <div class="prompt-image-frame">
+          <div id="prompt-images" class="prompt-image-grid"></div>
+        </div>
+      </div>
+
       <div class="grid" style="margin-top: 18px;">
-        <h2 class="section-title">II. PHẦN TỰ LUẬN (CODE)</h2>
+        <h2 class="section-title" id="coding-title">II. PHẦN TỰ LUẬN (CODE)</h2>
         <div id="coding-list" class="coding-grid"></div>
       </div>
 
@@ -70,6 +77,22 @@
       <div class="result-answers" id="result-answers"></div>
     </section>
   </main>
+
+  <div id="image-lightbox" class="image-lightbox" style="display: none;">
+    <div class="image-lightbox-backdrop" id="image-lightbox-backdrop"></div>
+    <div class="image-lightbox-panel">
+      <div class="image-lightbox-toolbar">
+        <button id="zoom-out-btn" type="button" class="btn-secondary">-</button>
+        <span id="zoom-value">100%</span>
+        <button id="zoom-in-btn" type="button" class="btn-secondary">+</button>
+        <button id="zoom-reset-btn" type="button" class="btn-secondary">Mặc định</button>
+        <button id="zoom-close-btn" type="button" class="btn-secondary">Đóng</button>
+      </div>
+      <div class="image-lightbox-body">
+        <img id="lightbox-image" alt="Ảnh đề phóng to" />
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

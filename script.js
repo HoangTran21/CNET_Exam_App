@@ -3,7 +3,8 @@ const quizFiles = [
   { label: "Module 2: Thuật toán, Hàm, Các CTDL", file: "data/module2.json" },
   { label: "Map-Zip-Đệ quy", file: "data/Map_zip_enumerate_Đệ quy.json" },
   { label: "Ôn tập map, zip, enumerate, CTDL", file: "data/Ôn tập cho Lâm.json" },
-  { label: "Bài kiểm tra giải toán", file: "data/Bai_kiem_tra_GiaiToan.json"}
+  { label: "Bài kiểm tra giải toán", file: "data/Bai_kiem_tra_GiaiToan.json"},
+  { label: "Đề tự luận theo ảnh", file: "data/DeThiLongPhu.json" }
 ];
 
 const quizSelect = document.getElementById("quiz-select");
@@ -15,7 +16,19 @@ const nameInput = document.getElementById("student-name");
 const nameError = document.getElementById("name-error");
 const quizTitle = document.getElementById("quiz-title");
 const timerEl = document.getElementById("timer");
+const mcqTitleEl = document.getElementById("mcq-title");
 const questionsEl = document.getElementById("questions");
+const promptImageSection = document.getElementById("prompt-image-section");
+const promptImagesEl = document.getElementById("prompt-images");
+const imageLightboxEl = document.getElementById("image-lightbox");
+const imageLightboxBackdropEl = document.getElementById("image-lightbox-backdrop");
+const lightboxImageEl = document.getElementById("lightbox-image");
+const zoomInBtn = document.getElementById("zoom-in-btn");
+const zoomOutBtn = document.getElementById("zoom-out-btn");
+const zoomResetBtn = document.getElementById("zoom-reset-btn");
+const zoomCloseBtn = document.getElementById("zoom-close-btn");
+const zoomValueEl = document.getElementById("zoom-value");
+const codingTitleEl = document.getElementById("coding-title");
 const submitBtn = document.getElementById("submit-btn");
 const resetBtn = document.getElementById("reset-btn");
 const resultBox = document.getElementById("result-box");
@@ -38,6 +51,98 @@ let countdownId = null;
 let timeLeft = 0;
 let lastAutoSaveAt = 0;
 let isSubmitted = false;
+let lightboxScale = 1;
+
+const LIGHTBOX_MIN_SCALE = 0.5;
+const LIGHTBOX_MAX_SCALE = 3;
+const LIGHTBOX_STEP = 0.1;
+
+function isCodingOnlyQuiz(data) {
+  if (!data) return false;
+  if (data.mode === "coding_only") return true;
+  const noQuestions = !Array.isArray(data.questions) || data.questions.length === 0;
+  const hasCoding = normalizeCodingTasks(data).length > 0;
+  return noQuestions && hasCoding;
+}
+
+function hasTimer(data) {
+  return Number(data?.time_seconds) > 0;
+}
+
+function normalizePromptImages(data) {
+  if (Array.isArray(data?.prompt_images) && data.prompt_images.length) {
+    return data.prompt_images.filter((value) => typeof value === "string" && value.trim());
+  }
+  if (typeof data?.prompt_image === "string" && data.prompt_image.trim()) {
+    return [data.prompt_image];
+  }
+  return [];
+}
+
+function updateLightboxScale() {
+  const rounded = Math.round(lightboxScale * 100);
+  zoomValueEl.textContent = `${rounded}%`;
+  lightboxImageEl.style.transform = `scale(${lightboxScale})`;
+}
+
+function setLightboxScale(scaleValue) {
+  lightboxScale = Math.max(LIGHTBOX_MIN_SCALE, Math.min(LIGHTBOX_MAX_SCALE, scaleValue));
+  updateLightboxScale();
+}
+
+function openImageLightbox(imagePath, imageAlt) {
+  lightboxImageEl.src = imagePath;
+  lightboxImageEl.alt = imageAlt || "Ảnh đề phóng to";
+  imageLightboxEl.style.display = "block";
+  document.body.classList.add("modal-open");
+  setLightboxScale(1);
+}
+
+function closeImageLightbox() {
+  imageLightboxEl.style.display = "none";
+  document.body.classList.remove("modal-open");
+}
+
+function zoomLightbox(direction) {
+  const nextScale = lightboxScale + direction * LIGHTBOX_STEP;
+  setLightboxScale(nextScale);
+}
+
+function renderPromptImage(data) {
+  const imagePaths = normalizePromptImages(data);
+  promptImagesEl.innerHTML = "";
+
+  if (!imagePaths.length) {
+    promptImageSection.style.display = "none";
+    return;
+  }
+
+  imagePaths.forEach((imagePath, idx) => {
+    const thumb = document.createElement("div");
+    thumb.className = "prompt-thumb";
+    thumb.dataset.src = imagePath;
+    thumb.dataset.alt = `Ảnh đề ${idx + 1}: ${data?.title || "Đề tự luận"}`;
+
+    const img = document.createElement("img");
+    img.src = imagePath;
+    img.alt = thumb.dataset.alt;
+    thumb.appendChild(img);
+    promptImagesEl.appendChild(thumb);
+  });
+
+  promptImageSection.style.display = "block";
+}
+
+function applyQuizModeUI(data) {
+  const codingOnly = isCodingOnlyQuiz(data);
+  const useTimer = hasTimer(data);
+
+  mcqTitleEl.style.display = codingOnly ? "none" : "block";
+  questionsEl.style.display = codingOnly ? "none" : "grid";
+  codingTitleEl.textContent = codingOnly ? "PHẦN TỰ LUẬN (CODE)" : "II. PHẦN TỰ LUẬN (CODE)";
+  timerEl.style.display = useTimer ? "inline-block" : "none";
+  renderPromptImage(codingOnly ? data : null);
+}
 
 function ensureConfirmModal() {
   let modal = document.getElementById("app-confirm-modal");
@@ -110,6 +215,13 @@ function formatTime(seconds) {
 }
 
 function setTimer(seconds) {
+  if (!(seconds > 0)) {
+    timeLeft = 0;
+    timerEl.textContent = "";
+    if (countdownId) clearInterval(countdownId);
+    return;
+  }
+
   timeLeft = seconds;
   timerEl.textContent = formatTime(timeLeft);
   if (countdownId) clearInterval(countdownId);
@@ -256,13 +368,68 @@ function buildQuestions(questions) {
 }
 
 function setQuizInfo(data) {
-  quizInfo.textContent = `${data.title} · ${data.questions.length} câu`;
+  const questionCount = Array.isArray(data?.questions) ? data.questions.length : 0;
+  if (isCodingOnlyQuiz(data)) {
+    quizInfo.textContent = `${data.title} · Tự luận code`;
+    return;
+  }
+  quizInfo.textContent = `${data.title} · ${questionCount} câu`;
 }
 
 function normalizeCodingTasks(data) {
   if (Array.isArray(data.coding_tasks)) return data.coding_tasks;
   if (typeof data.coding_task === "string") return [data.coding_task];
   return [];
+}
+
+function handleCodeEditorKeydown(event, textarea) {
+  const indentUnit = "    ";
+  const value = textarea.value;
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+
+  if (event.key === "Tab") {
+    event.preventDefault();
+
+    if (event.shiftKey) {
+      const lineStart = value.lastIndexOf("\n", start - 1) + 1;
+      const beforeLine = value.slice(0, lineStart);
+      const lineText = value.slice(lineStart, end);
+      const dedented = lineText.replace(/^ {1,4}/, "");
+      textarea.value = beforeLine + dedented + value.slice(end);
+      const removed = lineText.length - dedented.length;
+      const nextPos = Math.max(lineStart, start - removed);
+      textarea.selectionStart = nextPos;
+      textarea.selectionEnd = nextPos;
+      saveDraft(true);
+      return;
+    }
+
+    const before = value.slice(0, start);
+    const after = value.slice(end);
+    textarea.value = before + indentUnit + after;
+    const nextPos = start + indentUnit.length;
+    textarea.selectionStart = nextPos;
+    textarea.selectionEnd = nextPos;
+    saveDraft(true);
+    return;
+  }
+
+  if (event.key === "Enter") {
+    event.preventDefault();
+    const before = value.slice(0, start);
+    const after = value.slice(end);
+    const lineStart = before.lastIndexOf("\n") + 1;
+    const currentLine = before.slice(lineStart);
+    const currentIndent = (currentLine.match(/^\s*/) || [""])[0];
+    const addIndent = currentLine.trimEnd().endsWith(":") ? indentUnit : "";
+    const insertion = `\n${currentIndent}${addIndent}`;
+    textarea.value = before + insertion + after;
+    const nextPos = before.length + insertion.length;
+    textarea.selectionStart = nextPos;
+    textarea.selectionEnd = nextPos;
+    saveDraft(true);
+  }
 }
 
 function renderCodingTasks(tasks) {
@@ -293,17 +460,7 @@ function renderCodingTasks(tasks) {
     textarea.rows = 6;
     textarea.placeholder = "Nhập code của bạn...";
     textarea.dataset.index = idx;
-    
-    // Add auto-indent handler for Python ':'
-    textarea.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && textarea.value[textarea.selectionStart - 1] === ":") {
-        e.preventDefault();
-        const before = textarea.value.substring(0, textarea.selectionStart);
-        const after = textarea.value.substring(textarea.selectionStart);
-        textarea.value = before + "\n    " + after;
-        textarea.selectionStart = textarea.selectionEnd = before.length + 5;
-      }
-    });
+    textarea.addEventListener("keydown", (event) => handleCodeEditorKeydown(event, textarea));
     
     card.appendChild(textarea);
     codingList.appendChild(card);
@@ -336,9 +493,10 @@ async function handleStart() {
     currentQuiz = await loadQuiz(file);
     setQuizInfo(currentQuiz);
     quizTitle.textContent = currentQuiz.title;
+    applyQuizModeUI(currentQuiz);
     buildQuestions(currentQuiz.questions || []);
     renderCodingTasks(normalizeCodingTasks(currentQuiz));
-    setTimer(currentQuiz.time_seconds || 900);
+    setTimer(currentQuiz.time_seconds || 0);
     resultBox.style.display = "none";
     resultBox.textContent = "";
     setupCard.style.display = "none";
@@ -375,31 +533,34 @@ async function handleSubmit() {
   const answers = Array.from(questionsEl.querySelectorAll(".question"));
   const selectedAnswers = [];
   let correct = 0;
-  answers.forEach((qEl, idx) => {
-    const selected = qEl.querySelector("input[type=radio]:checked");
-    const correctIdx = currentQuiz.questions[idx].ans;
-    const optionEls = qEl.querySelectorAll(".option");
-    optionEls.forEach((optEl, optIdx) => {
-      optEl.classList.remove("correct", "wrong");
-      if (optIdx === correctIdx) optEl.classList.add("correct");
+  if (!isCodingOnlyQuiz(currentQuiz)) {
+    answers.forEach((qEl, idx) => {
+      const selected = qEl.querySelector("input[type=radio]:checked");
+      const correctIdx = currentQuiz.questions[idx].ans;
+      const optionEls = qEl.querySelectorAll(".option");
+      optionEls.forEach((optEl, optIdx) => {
+        optEl.classList.remove("correct", "wrong");
+        if (optIdx === correctIdx) optEl.classList.add("correct");
+      });
+      if (selected && Number(selected.value) === correctIdx) {
+        correct += 1;
+      } else if (selected) {
+        optionEls[Number(selected.value)]?.classList.add("wrong");
+      }
+      selectedAnswers.push(selected ? Number(selected.value) : -1);
     });
-    if (selected && Number(selected.value) === correctIdx) {
-      correct += 1;
-    } else if (selected) {
-      optionEls[Number(selected.value)]?.classList.add("wrong");
-    }
-    selectedAnswers.push(selected ? Number(selected.value) : -1);
-  });
+  }
 
-  const total = currentQuiz.questions.length;
+  const total = Array.isArray(currentQuiz.questions) ? currentQuiz.questions.length : 0;
   const codingAnswers = Array.from(codingList.querySelectorAll("textarea")).map((el) => el.value.trim());
   const quizFile = quizSelect.value;
+  const scoreText = total > 0 ? `${correct}/${total}` : "N/A";
 
   const payload = {
     name,
     quizTitle: currentQuiz.title,
     quizFile,
-    score: `${correct}/${total}`,
+    score: scoreText,
     timeLeft,
     submittedAt: new Date().toISOString(),
     codingAnswers,
@@ -408,7 +569,10 @@ async function handleSubmit() {
 
   localStorage.setItem(LAST_SUBMIT_KEY, JSON.stringify(payload));
 
-  const summaryHtml = `<strong>${name}</strong>, bạn đúng ${correct}/${total} câu.\nĐề: ${currentQuiz.title}`;
+  const summaryText = total > 0
+    ? `<strong>${name}</strong>, bạn đúng ${correct}/${total} câu.\nĐề: ${currentQuiz.title}`
+    : `<strong>${name}</strong>, đã nộp phần tự luận thành công.\nĐề: ${currentQuiz.title}`;
+  const summaryHtml = summaryText;
   resultBox.innerHTML = summaryHtml.replace(/\n/g, "<br>");
   resultBox.style.display = "block";
 
@@ -444,8 +608,12 @@ function handleReset() {
   codingList.innerHTML = "";
   currentQuiz = null;
   isSubmitted = false;
+  promptImageSection.style.display = "none";
+  promptImagesEl.innerHTML = "";
+  closeImageLightbox();
   if (countdownId) clearInterval(countdownId);
   timerEl.textContent = "00:00";
+  timerEl.style.display = "inline-block";
   clearDraft();
 }
 
@@ -480,13 +648,16 @@ function buildDetailedQuestionResults(quizData, selectedAnswers) {
 
 function buildWordHtml(payload, quizData) {
   const lines = [];
+  const hasMcq = Array.isArray(quizData?.questions) && quizData.questions.length > 0;
   lines.push(`<h1>${payload.quizTitle}</h1>`);
   lines.push(`<p><strong>Học sinh:</strong> ${payload.name}</p>`);
-  lines.push(`<p><strong>Điểm trắc nghiệm:</strong> ${payload.score}</p>`);
+  if (hasMcq) {
+    lines.push(`<p><strong>Điểm trắc nghiệm:</strong> ${payload.score}</p>`);
+  }
   lines.push(`<p><strong>Thời gian nộp:</strong> ${formatDate(payload.submittedAt)}</p>`);
 
-  lines.push("<h2>I. PHẦN TRẮC NGHIỆM</h2>");
-  if (quizData?.questions?.length) {
+  if (hasMcq) {
+    lines.push("<h2>I. PHẦN TRẮC NGHIỆM</h2>");
     quizData.questions.forEach((q, idx) => {
       const picked = payload.selectedAnswers?.[idx] ?? -1;
       const pickedText = picked === -1 ? "(Bỏ trống)" : q.opts[picked];
@@ -630,11 +801,26 @@ function buildAnswerSummary(quizData, selectedAnswers) {
 }
 
 function renderResult(payload, quizData) {
-  const summary = `<strong>${payload.name}</strong>, bạn đúng ${payload.score} câu.\nĐề: ${payload.quizTitle}\nThời gian nộp: ${formatDate(payload.submittedAt)}`;
+  const hasMcq = Array.isArray(quizData?.questions) && quizData.questions.length > 0;
+  const summary = hasMcq
+    ? `<strong>${payload.name}</strong>, bạn đúng ${payload.score} câu.\nĐề: ${payload.quizTitle}\nThời gian nộp: ${formatDate(payload.submittedAt)}`
+    : `<strong>${payload.name}</strong>, đã nộp phần tự luận thành công.\nĐề: ${payload.quizTitle}\nThời gian nộp: ${formatDate(payload.submittedAt)}`;
   resultSummary.innerHTML = summary.replace(/\n/g, "<br>");
-  resultTime.textContent = `Còn lại: ${formatTime(payload.timeLeft || 0)}`;
+  if ((payload.timeLeft || 0) > 0) {
+    resultTime.style.display = "inline-block";
+    resultTime.textContent = `Còn lại: ${formatTime(payload.timeLeft || 0)}`;
+  } else {
+    resultTime.style.display = "none";
+    resultTime.textContent = "";
+  }
   resultCoding.value = "Giáo viên sẽ chấm phần tự luận sau.";
-  buildAnswerSummary(quizData, payload.selectedAnswers || []);
+  if (hasMcq) {
+    resultAnswers.style.display = "grid";
+    buildAnswerSummary(quizData, payload.selectedAnswers || []);
+  } else {
+    resultAnswers.style.display = "none";
+    resultAnswers.innerHTML = "";
+  }
 }
 
 async function hydrateFromStorage() {
@@ -684,12 +870,17 @@ async function restoreDraftIfExists() {
     quizSelect.value = draft.quizFile;
     setQuizInfo(currentQuiz);
     quizTitle.textContent = currentQuiz.title;
+    applyQuizModeUI(currentQuiz);
     buildQuestions(currentQuiz.questions || []);
     renderCodingTasks(normalizeCodingTasks(currentQuiz));
 
-    const defaultTime = currentQuiz.time_seconds || 900;
+    const defaultTime = currentQuiz.time_seconds || 0;
     const restoredTime = Number(draft.timeLeft);
-    setTimer(restoredTime > 0 ? restoredTime : defaultTime);
+    if (defaultTime > 0) {
+      setTimer(restoredTime > 0 ? restoredTime : defaultTime);
+    } else {
+      setTimer(0);
+    }
 
     nameInput.value = draft.name || "";
     setSelectedAnswersToUI(draft.selectedAnswers);
@@ -724,6 +915,39 @@ questionsEl.addEventListener("change", (event) => {
     if (option) option.classList.toggle("selected", radio.checked);
   });
   saveDraft(true);
+});
+
+promptImagesEl.addEventListener("click", (event) => {
+  const target = event.target;
+  const thumb = target?.closest?.(".prompt-thumb");
+  if (!thumb) return;
+  openImageLightbox(thumb.dataset.src, thumb.dataset.alt);
+});
+
+zoomInBtn.addEventListener("click", () => zoomLightbox(1));
+zoomOutBtn.addEventListener("click", () => zoomLightbox(-1));
+zoomResetBtn.addEventListener("click", () => setLightboxScale(1));
+zoomCloseBtn.addEventListener("click", closeImageLightbox);
+imageLightboxBackdropEl.addEventListener("click", closeImageLightbox);
+
+lightboxImageEl.addEventListener("wheel", (event) => {
+  event.preventDefault();
+  zoomLightbox(event.deltaY < 0 ? 1 : -1);
+}, { passive: false });
+
+window.addEventListener("keydown", (event) => {
+  if (imageLightboxEl.style.display !== "block") return;
+  if (event.key === "Escape") {
+    closeImageLightbox();
+    return;
+  }
+  if (event.key === "+" || event.key === "=") {
+    zoomLightbox(1);
+    return;
+  }
+  if (event.key === "-") {
+    zoomLightbox(-1);
+  }
 });
 
 codingList.addEventListener("input", () => {

@@ -1,0 +1,16 @@
+{
+  "title": "De_tu_luan_code_theo_anh",
+  "mode": "coding_only",
+  "time_seconds": 0,
+  "prompt_images": [
+    "data/Đề thi Long Phủ 24-25.png",
+    "data/Đề thi Long Phủ 24-25 - page 2.png"
+  ],
+  "questions": [],
+  "coding_tasks": [
+    "Nướng bánh.",
+    "Cháo, Phở và Bún Xào.",
+    "Bán bò",
+    "Số chia hết cho 8"
+  ]
+}
