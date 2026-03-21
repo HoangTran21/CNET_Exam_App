@@ -163,6 +163,16 @@
             "ans": 1
         },
         {
+            "q": "AI là viết tắt của từ gì trong lĩnh vực công nghệ?",
+            "opts": ["Artificial Intelligence", "Automated Integration", "Advanced Interface", "Automatic Innovation"],
+            "ans": 0
+        },
+        {
+            "q": "GOAT trong bóng đá là ai?",
+            "opts": ["Pelé", "Maradona", "Messi", "Ronaldo"],
+            "ans": 2
+        },
+        {
             "q": "Mã điện thoại Việt Nam là?",
             "opts": [
                     "+36",

@@ -38,9 +38,9 @@
       "ans": 1
     },
     {
-      "q": "Kết quả của đoạn code if với x = 10?",
-      "opts": ["A", "B", "AB", "Không in"],
-      "ans": 0
+      "q": "Kết quả của đoạn code lst = [1,2,3], lst.append(6) với x = 10?",
+      "opts": ["[1,2,3,10]", "[1,2,3,6]", "[4,1,2,3]", "Lỗi"],
+      "ans": 1
     },
     {
       "q": "Vòng lặp nào dùng khi chưa biết trước số lần lặp?",
@@ -120,7 +120,7 @@
                     "Float (Số thực)",
                     "Boolean (Giá trị đúng/sai)"
                     ],
-            "ans": 2
+            "ans": 1
         }
   ],
   "coding_tasks": [
