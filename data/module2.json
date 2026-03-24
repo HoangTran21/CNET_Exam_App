@@ -183,14 +183,29 @@
             "ans": 2
         },
         {
-            "q": "67 là kiểu dữ liệu gì?",
+            "q": "Kết quả của lệnh print(\"36 + 67\") là gì?",
             "opts": [
-                    "String (Chuỗi)",
-                    "Integer (Số nguyên)",
-                    "Float (Số thực)",
-                    "Boolean (Giá trị đúng/sai)"
+                    "36 + 67",
+                    "103",
+                    "36 + 67 = 103",
+                    "Lỗi"
                     ],
+            "ans": 1
+        },
+        {
+            "q": "Trong bài toán đổi tiền, nếu số tiền cần đổi là 367k thì với các mệnh giá 100k, 50k, 20k, 10k, 5k, 2k, 1k thì số tờ cần dùng ít nhất là bao nhiêu?",
+            "opts": ["5", "6", "7", "8"],
             "ans": 2
+        },
+        {
+            "q":"Quang Trung và Nguyễn Huệ có mối quan hệ gì với nhau?",
+            "opts": [
+                    "Anh em ruột",
+                    "Anh em họ",
+                    "là một người",
+                    "Cha con"
+                    ],
+            "ans": 0
         }
     ],
     "coding_tasks": [
