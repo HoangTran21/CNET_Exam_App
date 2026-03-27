@@ -3,11 +3,11 @@
   "mode": "coding_only",
   "time_seconds": 0,
   "prompt_images": [
-    "data/TiềnGiang2021/1.jpg",
-    "data/TiềnGiang2021/2.jpg",
-    "data/TiềnGiang2021/3.jpg",
-    "data/TiềnGiang2021/4.jpg",
-    "data/TiềnGiang2021/5.jpg"
+    "data/TiềnGiang2021/1.webp",
+    "data/TiềnGiang2021/2.webp",
+    "data/TiềnGiang2021/3.webp",
+    "data/TiềnGiang2021/4.webp",
+    "data/TiềnGiang2021/5.webp"
   ],
   "questions": [],
   "coding_tasks": [
