@@ -4,7 +4,8 @@ const quizFiles = [
   { label: "Map-Zip-Đệ quy", file: "data/Map_zip_enumerate_Đệ quy.json" },
   { label: "Ôn tập map, zip, enumerate, CTDL", file: "data/Ôn tập cho Lâm.json" },
   { label: "Bài kiểm tra giải toán", file: "data/Bai_kiem_tra_GiaiToan.json"},
-  { label: "Đề tự luận theo ảnh", file: "data/DeThiLongPhu.json" }
+  { label: "Đề thi Long Phú", file: "data/DeThiLongPhu.json" },
+  { label: "Đề thi Tiền Giang 2021", file: "data/DeThiTienGiang21.json" }
 ];
 
 const quizSelect = document.getElementById("quiz-select");

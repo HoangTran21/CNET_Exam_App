@@ -1,0 +1,20 @@
+{
+  "title": "Đề thi Tiền Giang 2021",
+  "mode": "coding_only",
+  "time_seconds": 0,
+  "prompt_images": [
+    "data/TiềnGiang2021/1.jpg",
+    "data/TiềnGiang2021/2.jpg",
+    "data/TiềnGiang2021/3.jpg",
+    "data/TiềnGiang2021/4.jpg",
+    "data/TiềnGiang2021/5.jpg"
+  ],
+  "questions": [],
+  "coding_tasks": [
+    "Số kết đôi.",
+    "World cup.",
+    "Phần tử điển hình",
+    "Đặt mật khẩu.",
+    "Sự lây lan."
+  ]
+}
