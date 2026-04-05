@@ -1,0 +1,16 @@
+{
+  "title": "Đề thi THPT Lê Chân 2026",
+  "mode": "coding_only",
+  "time_seconds": 0,
+  "prompt_images": [
+    "data/LeChan2026/1.jpg",
+    "data/LeChan2026/2.jpg"
+  ],
+  "questions": [],
+  "coding_tasks": [
+    "Xử lý số tự nhiên.",
+    "Xử lý xâu",
+    "Xử lý danh sách.",
+    "Nén xâu."
+  ]
+}
