@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="vi">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,9 +8,12 @@
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="noise"></div>
   <header>
@@ -30,6 +34,15 @@
           <select id="quiz-select"></select>
         </div>
       </div>
+      <div class="grid two" style="margin-top: 14px;">
+        <div>
+          <label for="lecture-select">Chọn bài giảng</label>
+          <select id="lecture-select"></select>
+        </div>
+        <div style="display: flex; align-items: end;">
+          <button id="download-lecture-btn" type="button" class="btn-secondary">Tải về bài giảng</button>
+        </div>
+      </div>
       <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
         <button id="start-btn">Bắt đầu</button>
         <span class="pill" id="quiz-info">Chưa có đề thi</span>
@@ -41,19 +54,25 @@
         <span class="pill" id="quiz-title"></span>
         <span class="timer" id="timer">00:00</span>
       </div>
-      <h2 class="section-title" id="mcq-title">I. PHẦN TRẮC NGHIỆM</h2>
-      <div class="grid" id="questions"></div>
+      <div id="quiz-content-wrapper">
+        <div id="split-left" class="split-pane split-left" style="display: none;"></div>
+        <div id="split-gutter" class="split-gutter" style="display: none;"></div>
+        <div id="split-right" class="split-pane split-right">
+          <h2 class="section-title" id="mcq-title">I. PHẦN TRẮC NGHIỆM</h2>
+          <div class="grid" id="questions"></div>
 
-      <div id="prompt-image-section" style="display: none; margin-top: 8px;">
-        <h2 class="section-title">ĐỀ TỰ LUẬN (ẢNH)</h2>
-        <div class="prompt-image-frame">
-          <div id="prompt-images" class="prompt-image-grid"></div>
+          <div id="prompt-image-section" style="display: none; margin-top: 8px;">
+            <h2 class="section-title">ĐỀ TỰ LUẬN (ẢNH)</h2>
+            <div class="prompt-image-frame">
+              <div id="prompt-images" class="prompt-image-grid"></div>
+            </div>
+          </div>
+
+          <div class="grid" style="margin-top: 18px;">
+            <h2 class="section-title" id="coding-title">II. PHẦN TỰ LUẬN (CODE)</h2>
+            <div id="coding-list" class="coding-grid"></div>
+          </div>
         </div>
-      </div>
-
-      <div class="grid" style="margin-top: 18px;">
-        <h2 class="section-title" id="coding-title">II. PHẦN TỰ LUẬN (CODE)</h2>
-        <div id="coding-list" class="coding-grid"></div>
       </div>
 
       <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
@@ -96,4 +115,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

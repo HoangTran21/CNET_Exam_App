@@ -2,14 +2,22 @@ const quizFiles = [
   { label: "Module 1: Cơ bản", file: "data/module1.json" },
   { label: "Module 2: Thuật toán, Hàm, Các CTDL", file: "data/module2.json" },
   { label: "Map-Zip-Đệ quy", file: "data/Map_zip_enumerate_Đệ quy.json" },
-  { label: "Ôn tập map, zip, enumerate, CTDL", file: "data/Ôn tập cho Lâm.json" },
-  { label: "Bài kiểm tra giải toán", file: "data/Bai_kiem_tra_GiaiToan.json"},
+  { label: "Ôn tập map, zip, enumerate, CTDL", file: "data/BT_Tet26.json" },
+  { label: "Bài kiểm tra giải toán", file: "data/Bai_kiem_tra_GiaiToan.json" },
   { label: "Đề thi Long Phú", file: "data/DeThiLongPhu.json" },
   { label: "Đề thi Tiền Giang 2021", file: "data/DeThiTienGiang21.json" },
   { label: "Đề thi THPT Lê Chân 2026", file: "data/DeThiTHPTLeChan.json" }
 ];
 
+const lectureFiles = [
+  { label: "Kiểm soát lỗi", file: "lectures/CNET _SCRATCH_Python Error_Handling.pptx" },
+  { label: "Lambda_filter", file: "lectures/CNET _SCRATCH_Python Lambda_Filter.pptx" },
+  { label: "Thư viện Math", file: "lectures/CNET _SCRATCH_Python Math_Library.pptx" },
+];
+
 const quizSelect = document.getElementById("quiz-select");
+const lectureSelect = document.getElementById("lecture-select");
+const downloadLectureBtn = document.getElementById("download-lecture-btn");
 const quizInfo = document.getElementById("quiz-info");
 const startBtn = document.getElementById("start-btn");
 const quizCard = document.getElementById("quiz-card");
@@ -463,7 +471,7 @@ function renderCodingTasks(tasks) {
     textarea.placeholder = "Nhập code của bạn...";
     textarea.dataset.index = idx;
     textarea.addEventListener("keydown", (event) => handleCodeEditorKeydown(event, textarea));
-    
+
     card.appendChild(textarea);
     codingList.appendChild(card);
   });
@@ -483,6 +491,49 @@ function buildSelect() {
     opt.textContent = quiz.label;
     quizSelect.appendChild(opt);
   });
+}
+
+function buildLectureSelect() {
+  lectureSelect.innerHTML = "";
+
+  if (!lectureFiles.length) {
+    const empty = document.createElement("option");
+    empty.value = "";
+    empty.textContent = "Chưa có bài giảng";
+    lectureSelect.appendChild(empty);
+    lectureSelect.disabled = true;
+    downloadLectureBtn.disabled = true;
+    return;
+  }
+
+  lectureFiles.forEach((lecture) => {
+    const opt = document.createElement("option");
+    opt.value = lecture.file;
+    opt.textContent = lecture.label;
+    lectureSelect.appendChild(opt);
+  });
+
+  lectureSelect.disabled = false;
+  downloadLectureBtn.disabled = false;
+}
+
+function getDownloadFileName(filePath) {
+  if (typeof filePath !== "string") return "";
+  const normalized = filePath.split("?")[0].split("#")[0];
+  const parts = normalized.split("/");
+  return parts[parts.length - 1] || "";
+}
+
+function handleDownloadLecture() {
+  const filePath = lectureSelect.value;
+  if (!filePath) return;
+
+  const link = document.createElement("a");
+  link.href = filePath;
+  link.download = getDownloadFileName(filePath);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 async function handleStart() {
@@ -527,11 +578,11 @@ async function handleSubmit() {
   if (!currentQuiz) return;
   const name = getStudentName();
   if (!name) return;
-  
+
   // Clear draft and mark as submitted to prevent auto-save
   clearDraft();
   isSubmitted = true;
-  
+
   const answers = Array.from(questionsEl.querySelectorAll(".question"));
   const selectedAnswers = [];
   let correct = 0;
@@ -579,7 +630,7 @@ async function handleSubmit() {
   resultBox.style.display = "block";
 
   renderResult(payload, currentQuiz);
-  const fileName = `${sanitizeFileName(currentQuiz.title)}_${sanitizeFileName(name)}_${new Date().toISOString().slice(0,16).replace(/:/g,'-')}.doc`;
+  const fileName = `${sanitizeFileName(currentQuiz.title)}_${sanitizeFileName(name)}_${new Date().toISOString().slice(0, 16).replace(/:/g, '-')}.doc`;
   const wordHtml = buildWordHtml(payload, currentQuiz);
 
   const drivePayload = {
@@ -710,7 +761,7 @@ async function uploadToDrive(fileName, htmlContent, payload) {
     payload
   });
   let primaryError = null;
-  
+
   try {
     const response = await fetch(DRIVE_UPLOAD_URL, {
       method: "POST",
@@ -721,7 +772,7 @@ async function uploadToDrive(fileName, htmlContent, payload) {
     console.log("Drive response status:", response.status);
     const result = await response.json().catch(() => null);
     console.log("Drive response:", result);
-    
+
     if (!response.ok || !result?.ok) {
       throw new Error(result?.error || "Upload failed");
     }
@@ -760,23 +811,23 @@ function buildAnswerSummary(quizData, selectedAnswers) {
 
     const picked = selectedAnswers?.[idx] ?? -1;
     const isCorrect = picked === q.ans;
-    
+
     const headerRow = document.createElement("div");
     headerRow.style.cssText = "display: grid; grid-template-columns: 40px 1fr 150px; gap: 12px; align-items: start; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;";
-    
+
     const numTag = document.createElement("span");
     numTag.textContent = `${idx + 1}`;
     numTag.style.cssText = "font-weight: bold; color: #3498db;";
-    
+
     const questionText = document.createElement("div");
     questionText.textContent = q.q;
     questionText.style.cssText = "font-weight: 500;";
-    
+
     const statusTag = document.createElement("span");
     statusTag.className = `answer-tag${isCorrect ? "" : " wrong"}`;
     statusTag.textContent = isCorrect ? "✓ Đúng" : "✗ Sai";
     statusTag.style.cssText = `text-align: center; padding: 4px 8px; border-radius: 4px; font-weight: bold; ${isCorrect ? "background: #d4edda; color: #155724;" : "background: #f8d7da; color: #721c24;"}`;
-    
+
     headerRow.appendChild(numTag);
     headerRow.appendChild(questionText);
     headerRow.appendChild(statusTag);
@@ -784,16 +835,16 @@ function buildAnswerSummary(quizData, selectedAnswers) {
 
     const answerRow = document.createElement("div");
     answerRow.style.cssText = "display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; padding-left: 40px;";
-    
+
     const studentDiv = document.createElement("div");
     const studentText = picked === -1 ? "(không chọn)" : q.opts[picked];
     studentDiv.innerHTML = `<strong>Trả lời:</strong> ${studentText}`;
     studentDiv.style.cssText = "color: #555;";
-    
+
     const correctDiv = document.createElement("div");
     correctDiv.innerHTML = `<strong>Đáp án:</strong> ${q.opts[q.ans]}`;
     correctDiv.style.cssText = "color: #28a745; font-weight: 500;";
-    
+
     answerRow.appendChild(studentDiv);
     answerRow.appendChild(correctDiv);
     item.appendChild(answerRow);
@@ -841,7 +892,7 @@ async function hydrateFromStorage() {
 async function restoreDraftIfExists() {
   // Don't restore if already submitted
   if (isSubmitted) return;
-  
+
   const raw = localStorage.getItem(DRAFT_KEY);
   if (!raw) return;
 
@@ -961,6 +1012,8 @@ window.addEventListener("beforeunload", () => {
 });
 
 buildSelect();
+buildLectureSelect();
+downloadLectureBtn.addEventListener("click", handleDownloadLecture);
 quizSelect.addEventListener("change", async () => {
   const file = quizSelect.value;
   if (!file) return;
