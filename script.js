@@ -13,6 +13,9 @@ const lectureFiles = [
   { label: "Kiểm soát lỗi", file: "lectures/CNET _SCRATCH_Python Error_Handling.pptx" },
   { label: "Lambda_filter", file: "lectures/CNET _SCRATCH_Python Lambda_Filter.pptx" },
   { label: "Thư viện Math", file: "lectures/CNET _SCRATCH_Python Math_Library.pptx" },
+  { label: "Tuple", file: "lectures/CNET _SCRATCH_Python Tuple.pptx" },
+  { label: "Set", file: "lectures/CNET _SCRATCH_Python Set.pptx" },
+  { label: "Dictionary", file: "lectures/CNET _SCRATCH_Python Dictionary.pptx" },
 ];
 
 const quizSelect = document.getElementById("quiz-select");
