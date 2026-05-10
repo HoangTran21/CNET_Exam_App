@@ -190,7 +190,7 @@
                     "36 + 67 = 103",
                     "Lỗi"
                     ],
-            "ans": 1
+            "ans": 0
         },
         {
             "q": "Trong bài toán đổi tiền, nếu số tiền cần đổi là 367k thì với các mệnh giá 100k, 50k, 20k, 10k, 5k, 2k, 1k thì số tờ cần dùng ít nhất là bao nhiêu?",
@@ -205,7 +205,77 @@
                     "là một người",
                     "Cha con"
                     ],
+            "ans": 2
+        },
+        {
+            "q": "Phương thức append() áp dụng cho kiểu dữ liệu nào trong Python?",
+            "opts": ["List", "Tuple", "String", "Dict"],
             "ans": 0
+        },
+        {
+            "q": "Để thêm một phần tử vào cuối list A ta dùng phương thức nào?",
+            "opts": ["add()", "append()", "insert()", "extend()"],
+            "ans": 1
+        },
+        {
+            "q": "Để nối hai list A và B mà không tạo list mới, ta dùng phương thức nào?",
+            "opts": ["A + B", "A.extend(B)", "A.append(B)", "A.insert(B)"],
+            "ans": 1
+        },
+        {
+            "q": "Điểm khác chính giữa tuple và list là gì?",
+            "opts": ["Tuple immutable, list mutable", "Tuple có index, list không có", "Tuple chỉ chứa số", "List không thể lặp"],
+            "ans": 0
+        },
+        {
+            "q": "Phương thức keys() của dict trả về gì?",
+            "opts": ["Danh sách các giá trị", "Danh sách các khóa", "Số phần tử", "True/False"],
+            "ans": 1
+        },
+        {
+            "q": "d.get('x', 0) trả về gì nếu 'x' không tồn tại trong dict d?",
+            "opts": ["None", "Lỗi", "0", "''"],
+            "ans": 2
+        },
+        {
+            "q": "Phương thức items() của dict trả về gì?",
+            "opts": ["Danh sách các key", "Danh sách các value", "Danh sách các cặp (key, value)", "Số phần tử"],
+            "ans": 2
+        },
+        {
+            "q": "Hàm discard() trên set khác remove() ở điểm nào?",
+            "opts": ["Nếu phần tử không tồn tại thì raise error", "Nếu phần tử không tồn tại thì không lỗi", "Trả về phần tử bị xóa", "Không xóa được phần tử"],
+            "ans": 1
+        },
+        {
+            "q": "Kết quả của set([1,2,2,3]) là?",
+            "opts": ["{1,2,2,3}", "[1,2,3]", "{1,2,3}", "(1,2,3)"],
+            "ans": 2
+        },
+        {
+            "q": "Để chuyển từ list sang tuple, ta dùng hàm nào?",
+            "opts": ["tuple(list)", "list(tuple)", "set(list)", "dict(list)"],
+            "ans": 0
+        },
+        {
+            "q": "Kiểu dữ liệu nào sau đây có thể làm key trong dict?",
+            "opts": ["list", "tuple", "set", "dict"],
+            "ans": 1
+        },
+        {
+            "q": "Để kiểm tra phần tử x có trong set S hay không, biểu thức nào dùng?",
+            "opts": ["x in S", "S.contains(x)", "x.contains(S)", "in(x, S)"],
+            "ans": 0
+        },
+        {
+            "q": "Phương thức clear() trên list/set/dict làm gì?",
+            "opts": ["Xóa tất cả phần tử", "Xóa phần tử cuối cùng", "Không làm gì", "Trả về bản sao"],
+            "ans": 0
+        },
+        {
+            "q": "Trong dict comprehension {k:v for k,v in enumerate(lst)}, giá trị k là gì?",
+            "opts": ["Các phần tử của lst", "Chỉ số (index) của phần tử", "Giá trị None", "Số lượng phần tử"],
+            "ans": 1
         }
     ],
     "coding_tasks": [
