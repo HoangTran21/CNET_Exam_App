@@ -38,7 +38,7 @@
       "ans": 1
     },
     {
-      "q": "Kết quả của đoạn code lst = [1,2,3], lst.append(6) với x = 10?",
+      "q": "Kết quả của đoạn code lst = [1,2,3], lst.append(6) ?",
       "opts": ["[1,2,3,10]", "[1,2,3,6]", "[4,1,2,3]", "Lỗi"],
       "ans": 1
     },
@@ -63,9 +63,9 @@
       "ans": 2
     },
     {
-      "q": "Kết quả của đoạn code append?",
-      "opts": ["[1,2,3]", "[4,1,2,3]", "[1,2,3,4]", "Lỗi"],
-      "ans": 2
+      "q": "Kiểu nối chuỗi nào sau dưới đây là đúng?",
+      "opts": ["+", ":", "/", "Không có kiểu nào đúng"],
+      "ans": 0
     },
     {
       "q": "Hàm randint(1,5) trả về:",
